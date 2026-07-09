@@ -1,0 +1,13 @@
+{
+  "name": "travel-itinerary",
+  "owner": { "name": "Yash Agarwal", "url": "https://github.com/yash1097a" },
+  "plugins": [
+    {
+      "name": "travel-itinerary",
+      "source": "./",
+      "description": "Plan trips through a guided four-phase conversation and generate a polished PDF itinerary. Includes per-user preference profiles.",
+      "version": "1.0.0",
+      "keywords": ["travel", "itinerary", "pdf", "trip-planner"]
+    }
+  ]
+}

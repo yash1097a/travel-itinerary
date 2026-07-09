@@ -1,0 +1,14 @@
+# generated build output & scratch
+output/
+**/output/
+__pycache__/
+**/__pycache__/
+*.pyc
+.DS_Store
+
+# never commit personal data or downloaded map data — these live in the per-user
+# data dir ($CLAUDE_PLUGIN_DATA), not in the repo
+profiles/
+traveler_profile.json
+data/natural_earth/
+natural_earth/

@@ -1,0 +1,263 @@
+{
+  "meta": {
+    "doc_kind": "A Private Travel Itinerary",
+    "date_label": "September 2026",
+    "nights": 5,
+    "days": 6,
+    "footer_note": "For personal use only",
+    "output_filename": "Yellowstone_GrandTeton_Itinerary.pdf",
+    "author": "Travel Concierge"
+  },
+
+  "region": {
+    "title": "Yellowstone & Grand Teton",
+    "subtitle": "Wyoming & Montana",
+    "waypoints": ["Jackson Hole", "Grand Teton", "Old Faithful", "Lamar Valley", "Bozeman"]
+  },
+
+  "cover": {
+    "stats": [
+      {"value": "2", "label": "States"},
+      {"value": "5", "label": "Nights"},
+      {"value": "6", "label": "Days"}
+    ]
+  },
+
+  "summary": {
+    "route_heading": "Your Route",
+    "intro": "A one-way loop through the two crown jewels of the Northern Rockies — the abrupt granite skyline of Grand Teton and the geyser basins, canyons, and wildlife valleys of Yellowstone. Fly into Jackson Hole, drive north through the parks as the aspens turn gold, and fly home from Bozeman.",
+    "glance_tiles": [
+      {"value": "25–60°F", "label": "Temperature\nRange"},
+      {"value": "~480 mi", "label": "Total\nDistance"},
+      {"value": "6.4–8k ft", "label": "Elevation\nRange"},
+      {"value": "4 of 6", "label": "Days with\nDriving"}
+    ],
+    "activity_tags": [
+      "Wildlife Watching", "Geyser Basins", "Scenic Drives",
+      "Fall Foliage", "Sunrise Photography", "Day Hikes"
+    ],
+    "highlights": [
+      {"name": "Oxbow Bend", "desc": "Teton reflections at dawn"},
+      {"name": "Jenny Lake", "desc": "Glacial lake & hidden falls"},
+      {"name": "Grand Prismatic", "desc": "Largest hot spring in the US"},
+      {"name": "Lower Falls", "desc": "308-ft canyon waterfall"},
+      {"name": "Lamar Valley", "desc": "Wolves & bison at dawn"}
+    ]
+  },
+
+  "planning": {
+    "sections": [
+      {
+        "type": "info",
+        "label": "Flights",
+        "rows": [
+          {"label": "Arrival Airport", "value": "Jackson Hole — JAC (the only US airport inside a national park)"},
+          {"label": "Arrival Timing", "value": "Day 1, aim to land by early afternoon; NYC connects via Denver or Salt Lake"},
+          {"label": "Departure Airport", "value": "Bozeman — BZN (Bozeman Yellowstone International)"},
+          {"label": "Departure Timing", "value": "Day 6, afternoon; connect home via Denver, SLC, or Minneapolis"},
+          {"label": "Booking Note", "value": "Book multi-city (JFK/EWR → JAC, BZN → JFK/EWR). No nonstops from NYC to either; expect one stop. JAC is small and weather-sensitive — build in buffer. Book 8–10 weeks out."}
+        ]
+      },
+      {
+        "type": "info",
+        "label": "Getting Around",
+        "rows": [
+          {"label": "Pick Up", "value": "Jackson (JAC) — Day 1, on arrival"},
+          {"label": "Drop Off", "value": "Bozeman (BZN) — Day 6, ahead of the flight"},
+          {"label": "Vehicle & Driving", "value": "AWD SUV — late-September mornings can bring snow or ice at altitude. ~480 miles, mostly 45-mph park roads with frequent wildlife stops."},
+          {"label": "Booking Note", "value": "One-way rental JAC → BZN — reserve early; one-way inventory out of gateway airports is limited and pricey."}
+        ]
+      },
+      {
+        "type": "lodging",
+        "label": "Where to Stay",
+        "rows": [
+          {"nights": "1 – 2", "days": "Days 1–2", "area": "Jackson — town & Teton foothills",
+           "properties": [
+             {"name": "Anvil Hotel", "reason": "walkable downtown, excellent restaurant"},
+             {"name": "Jackson Lake Lodge", "reason": "in-park, iconic Teton views"},
+             {"name": "The Cloudveil", "reason": "boutique on the town square"}
+           ],
+           "notes": "Base for Grand Teton; book 2–3 months out, town fills in fall."},
+          {"nights": "3", "days": "Day 3", "area": "Old Faithful area",
+           "properties": [
+             {"name": "Old Faithful Inn", "reason": "the historic 1904 log lodge"},
+             {"name": "Old Faithful Snow Lodge", "reason": "newer, walk to the geyser"}
+           ],
+           "notes": "In-park lodging is scarce and books ~13 months out; reserve the moment dates firm."},
+          {"nights": "4", "days": "Day 4", "area": "Canyon Village",
+           "properties": [
+             {"name": "Canyon Lodge", "reason": "only in-park option by the Grand Canyon"}
+           ],
+           "notes": "Central for the canyon and Hayden Valley wildlife; book far ahead."},
+          {"nights": "5", "days": "Day 5", "area": "Gardiner / Mammoth (north)",
+           "properties": [
+             {"name": "Mammoth Hot Springs Hotel", "reason": "in-park by the terraces"},
+             {"name": "Yellowstone Gateway Inn", "reason": "Gardiner, kitchenettes, dinner in town"}
+           ],
+           "notes": "Positions you for a dawn Lamar Valley drive and the Bozeman departure."},
+          {"nights": "—", "days": "Day 6", "area": "No overnight — depart BZN",
+           "notes": "Mammoth / Gardiner → Bozeman (BZN), return car, afternoon flight."}
+        ]
+      },
+      {
+        "type": "info",
+        "label": "Before You Go",
+        "rows": [
+          {"label": "Park Pass", "value": "America the Beautiful Annual Pass ($80) covers both parks — buy at nps.gov or the entrance station."},
+          {"label": "Bear Safety", "value": "Grizzly country — carry EPA-approved bear spray (buy in Jackson; you can't fly with it). Keep 100 yds from bears and wolves, 25 yds from other wildlife."},
+          {"label": "Seasonal", "value": "Late September: aspens peak, elk are in rut, first snows possible. Some roads and services begin closing early-to-mid October — confirm before travel."},
+          {"label": "Reservations", "value": "Reserve lodge dining-room meals when you book lodging; an optional dawn Lamar Valley wildlife tour books 3–4 weeks ahead."},
+          {"label": "Road Status", "value": "Check nps.gov/yell and nps.gov/grte for road, weather, and closure updates the week before departure."}
+        ]
+      }
+    ]
+  },
+
+  "map": {
+    "stops": [
+      {"name": "Jackson", "sublabel": "Nights 1–2", "lat": 43.4799, "lon": -110.7624},
+      {"name": "Grand Teton", "sublabel": "Day 2", "lat": 43.7517, "lon": -110.7266},
+      {"name": "Old Faithful", "sublabel": "Night 3", "lat": 44.4605, "lon": -110.8281},
+      {"name": "Canyon Village", "sublabel": "Night 4", "lat": 44.7350, "lon": -110.4930},
+      {"name": "Mammoth", "sublabel": "Night 5", "lat": 44.9766, "lon": -110.7036},
+      {"name": "Bozeman", "sublabel": "Fly home — BZN", "lat": 45.6770, "lon": -111.0429}
+    ],
+    "legs": [
+      "≈ 45 min · 30 mi",
+      "≈ 2 h · 70 mi",
+      "≈ 1.5 h · 40 mi",
+      "≈ 1.5 h · 50 mi",
+      "≈ 1.5 h · 80 mi"
+    ]
+  },
+
+  "days": [
+    {
+      "title": "Arrive Jackson Hole",
+      "subtitle": "Grand Teton Gateway",
+      "timeline": [
+        {"time": "Afternoon", "title": "Land at JAC, pick up your rental", "body": "Jackson Hole Airport sits inside Grand Teton National Park — the only US airport within a national park, with the Tetons filling the windshield as you land. Rental desks are on-site; the town of Jackson is 20 minutes south."},
+        {"time": "Late Afternoon", "title": "Jackson Town Square", "body": "Stretch your legs around the antler-arch square, galleries, and shops. Buy bear spray and stock provisions now — it is cheaper and far better stocked here than anywhere in the parks."},
+        {"time": "Evening", "title": "Dinner in Jackson, early night", "body": "Settle in. Day 2 in Grand Teton rewards an early start, when the light is still and the peaks catch first sun."}
+      ],
+      "where_to_eat": [
+        {"category": "Coffee", "place": "Persephone Bakery — downtown Jackson", "note": "A local institution — excellent espresso and pastries. Expect a short morning line; worth it."},
+        {"category": "Lunch", "place": "Picnic — Jackson", "note": "Bright cafe with strong vegetarian bowls and sandwiches; an easy travel-day lunch."},
+        {"category": "Dinner", "place": "The Kitchen — Jackson", "note": "Contemporary spot with genuinely composed vegetarian plates, not an afterthought. Reserve ahead."}
+      ],
+      "worth_knowing": [
+        {"place": "Jackson Hole", "blurb": "\"Hole\" was 19th-century trapper slang for a high mountain valley ringed by peaks — this one named for trapper Davey Jackson, who worked the beaver streams here in the 1820s. The town of Jackson sits at the valley's south end; the valley itself is Jackson Hole."},
+        {"place": "The Tetons' Name", "blurb": "French-Canadian trappers named the three central peaks \"les Trois Tétons.\" At 13,775 feet, the Grand Teton rises abruptly with no foothills — the range is one of the youngest in the Rockies, still being lifted along an active fault while the valley floor drops away beside it."}
+      ]
+    },
+    {
+      "title": "Grand Teton National Park",
+      "subtitle": "Peaks, Lakes & Aspens",
+      "timeline": [
+        {"time": "6:30 AM", "title": "Sunrise at Oxbow Bend", "body": "The classic Teton reflection. Oxbow Bend mirrors Mount Moran in still morning water; late September adds gold cottonwoods and a strong chance of moose feeding in the shallows. Bring your telephoto and arrive before first light."},
+        {"time": "9:00 AM", "title": "Jenny Lake", "body": "The park's gem. Take the shuttle boat across (or walk the shoreline) to Hidden Falls and Inspiration Point — a gentle, high-reward hike. The aspens ringing the lake peak in late September."},
+        {"time": "1:00 PM", "title": "Teton Park Road & Signal Mountain", "body": "A slow scenic drive with a pullout at nearly every turnout; the Signal Mountain summit road opens a valley-wide panorama. Watch the sagebrush flats for bison and pronghorn."},
+        {"time": "Evening", "title": "Sunset at Mormon Row", "body": "The historic Moulton barns beneath the peaks — arguably the most photographed spot in the park — and, nearby, Ansel Adams' famous Snake River Overlook. Golden hour here is the shot of the trip."}
+      ],
+      "where_to_eat": [
+        {"category": "Coffee", "place": "Travel kit or Colter Bay Village", "note": "In-park coffee is limited; your pour-over earns its keep, or grab a cup at Colter Bay."},
+        {"category": "Lunch", "place": "Packed picnic — Jenny Lake", "note": "Provisions from Jackson; there is no better lunch spot than the Jenny Lake shore."},
+        {"category": "Dinner", "place": "Dornans — Moose", "note": "Casual spot with a legendary Teton-facing deck; solid vegetarian pizzas and pasta after a long day outside."}
+      ],
+      "worth_knowing": [
+        {"place": "Grand Teton National Park", "blurb": "Established in 1929 and expanded in 1950 after John D. Rockefeller Jr. quietly bought and donated valley ranchland to protect it, the park guards the range and the sagebrush flats below. Unlike most mountains, the Tetons have no foothills — the same fault that lifts the peaks drops the valley floor beside them."},
+        {"place": "Mormon Row", "blurb": "Latter-day Saint homesteaders settled this row in the 1890s, irrigating the dry flats by hand. The weathered Moulton barns that remain are among the most photographed structures in the United States, framed against the Grand."}
+      ]
+    },
+    {
+      "title": "Into Yellowstone",
+      "subtitle": "Geyser Country",
+      "timeline": [
+        {"time": "8:30 AM", "title": "Drive north into Yellowstone", "body": "Leave Grand Teton via the John D. Rockefeller Jr. Parkway and enter Yellowstone's South Entrance. About 2 hours to Old Faithful with stops, crossing the Continental Divide twice through lodgepole forest."},
+        {"time": "11:00 AM", "title": "West Thumb Geyser Basin", "body": "A compact, walkable basin of hot springs set right on the shore of Yellowstone Lake — steaming pools against deep blue water. A gentle boardwalk loop, about 45 minutes."},
+        {"time": "1:30 PM", "title": "Old Faithful & the Upper Geyser Basin", "body": "Check the predicted eruption time at the visitor center, then walk the boardwalk loop — the densest concentration of geysers on Earth. Old Faithful erupts roughly every 90 minutes; Grand and Riverside are worth timing if the predictions line up."},
+        {"time": "Evening", "title": "Old Faithful Inn", "body": "Even if you are not staying, step inside the 1904 log lobby — a seven-storey cathedral of lodgepole pine. Sunset light across the geyser basin is superb, and the cold air turns every vent to steam."}
+      ],
+      "where_to_eat": [
+        {"category": "Coffee", "place": "Old Faithful Inn / Snow Lodge", "note": "Lodge coffee is functional; the setting is the draw. The travel kit is your friend in the parks."},
+        {"category": "Lunch", "place": "Packed provisions", "note": "In-park food is limited and meat-forward. Packed vegetarian lunches serve you far better between basins."},
+        {"category": "Dinner", "place": "Old Faithful Inn Dining Room", "note": "The seasonal menu includes vegetarian mains; reserve when you book lodging, and ask for a table by the windows."}
+      ],
+      "worth_knowing": [
+        {"place": "Yellowstone, the First Park", "blurb": "Signed into law by Ulysses S. Grant in 1872, Yellowstone was the first national park in the world — the model later copied across the globe. It sits atop a supervolcano whose shallow magma powers roughly half of all the geothermal features on the planet."},
+        {"place": "Old Faithful", "blurb": "Named in 1870 for the reliability of its eruptions, it is not the largest geyser but among the most predictable — erupting every 44 to 125 minutes and sending as much as 8,400 gallons of water 100 to 180 feet into the air."}
+      ]
+    },
+    {
+      "title": "Prismatic & the Grand Canyon",
+      "subtitle": "Colors & Canyons",
+      "timeline": [
+        {"time": "8:00 AM", "title": "Midway Geyser Basin — Grand Prismatic", "body": "Arrive early, before the crowds and the worst of the steam. For the famous overhead view of the rainbow spring, take the short climb on the Fairy Falls trail to the Grand Prismatic Overlook."},
+        {"time": "11:00 AM", "title": "Hayden Valley — wildlife drive", "body": "One of the best places in the park for large bison herds, with elk and distant grizzlies likely. Drive slowly, use the pullouts, and keep your distance — this is a place to linger with binoculars."},
+        {"time": "2:00 PM", "title": "Grand Canyon of the Yellowstone", "body": "The Lower Falls plunge 308 feet into a canyon of yellow rhyolite — the rock that gave the park its name. Artist Point on the south rim and Lookout Point on the north are the essential viewpoints; the light shifts through the afternoon."},
+        {"time": "Evening", "title": "Canyon Village", "body": "Settle in near the canyon. If you have any energy left, the north-rim drive glows at last light and is nearly empty by evening."}
+      ],
+      "where_to_eat": [
+        {"category": "Coffee", "place": "Canyon Lodge / travel kit", "note": "Canyon Village has a coffee counter; otherwise your kit does the job."},
+        {"category": "Lunch", "place": "Packed picnic — Hayden Valley", "note": "Eat at a pullout with a view of the herds; there are no services between the basins."},
+        {"category": "Dinner", "place": "Canyon Lodge Eatery", "note": "Casual in-park dining with dependable vegetarian options — convenient and welcome after a full day."}
+      ],
+      "worth_knowing": [
+        {"place": "Grand Prismatic Spring", "blurb": "The largest hot spring in the United States and the third-largest in the world at 370 feet across. Its rainbow rings are alive: heat-loving microbes tint the water, deep blue at the scalding center giving way to greens, yellows, and oranges toward the cooler edges."},
+        {"place": "The Grand Canyon of the Yellowstone", "blurb": "Carved by the Yellowstone River through soft, hydrothermally altered rhyolite, the canyon's yellow and pink walls likely gave both the river and the park their name. The Lower Falls drop nearly twice the height of Niagara."}
+      ]
+    },
+    {
+      "title": "Lamar Valley & Mammoth",
+      "subtitle": "America's Serengeti",
+      "timeline": [
+        {"time": "6:00 AM", "title": "Dawn in the Lamar Valley", "body": "The single best wildlife drive in the park — great bison herds, and the country's best odds of watching wild wolves, especially in the first hour of light. Bring binoculars or a spotting scope and your longest lens; the community of wolf-watchers along the road is a resource in itself."},
+        {"time": "10:00 AM", "title": "Tower Fall & the Northeast Road", "body": "A 132-foot fall framed by volcanic pinnacles, with some of the park's best fall color on the drive between Tower and Lamar."},
+        {"time": "1:00 PM", "title": "Mammoth Hot Springs", "body": "Terraces of travertine — living, ever-changing rock built by hot springs depositing limestone at the surface. Walk the boardwalks; elk often lounge on the lawns of old Fort Yellowstone below."},
+        {"time": "Evening", "title": "Gardiner, Montana", "body": "Cross the historic Roosevelt Arch and drop into the gateway town for dinner, positioned for the easy morning drive to Bozeman."}
+      ],
+      "where_to_eat": [
+        {"category": "Coffee", "place": "Yellowstone Perk — Gardiner", "note": "Gardiner has real coffee and a relaxed cafe scene — a treat after days of lodge coffee."},
+        {"category": "Lunch", "place": "Packed picnic — Lamar Valley", "note": "There are no services in the Lamar; pack in, and linger over the wildlife rather than rushing out."},
+        {"category": "Dinner", "place": "Wonderland Cafe & Lodge — Gardiner", "note": "Farm-to-table with genuine vegetarian plates and local beer — a proper meal to end the park days."}
+      ],
+      "worth_knowing": [
+        {"place": "The Lamar Valley & the Wolves", "blurb": "Wolves were exterminated from Yellowstone by the 1920s and reintroduced in 1995 — one of the most closely studied wildlife recoveries in the world. Their return reshaped the whole system, from elk behavior to the very course of streams. The Lamar is the best place on Earth to watch wild wolves."},
+        {"place": "Mammoth Hot Springs", "blurb": "Unlike the silica geysers to the south, Mammoth's terraces are travertine — limestone dissolved underground and re-deposited at the surface, growing and shifting so quickly that the formations visibly change within a single season."}
+      ]
+    },
+    {
+      "title": "Drive to Bozeman, Fly Home",
+      "subtitle": "Paradise Valley → BZN",
+      "timeline": [
+        {"time": "8:00 AM", "title": "Roosevelt Arch & Paradise Valley", "body": "Leave Gardiner north through Paradise Valley — the Yellowstone River on one side, the Absaroka Range on the other. A beautiful, low-key final drive with plenty of pullouts."},
+        {"time": "10:30 AM", "title": "Bozeman — town time", "body": "About 1.5 hours to Bozeman. If time allows, wander downtown Main Street — a lively college town with an excellent food and coffee scene, and a last chance for a proper vegetarian meal and a good cup."},
+        {"time": "1:30 PM", "title": "Bozeman Yellowstone Airport (BZN)", "body": "Return the rental and fly home; NYC connections route through Denver, Salt Lake, or Minneapolis. Allow buffer — BZN has grown busy in recent years."}
+      ],
+      "where_to_eat": [
+        {"category": "Coffee", "place": "Treeline Coffee Roasters — Bozeman", "note": "One of Montana's best roasters — a fitting last cup before the flight."},
+        {"category": "Lunch", "place": "Nova Cafe — Bozeman", "note": "A beloved brunch spot with strong vegetarian options; an easy, excellent final meal."}
+      ],
+      "worth_knowing": [
+        {"place": "Paradise Valley", "blurb": "The Yellowstone River — the longest undammed river in the Lower 48 — runs the length of this valley between the Gallatin and Absaroka ranges. Long a refuge for artists, writers, and anglers drawn to the light and the water."},
+        {"place": "Bozeman", "blurb": "A former railroad and farming town turned mountain-town hub, anchored by Montana State University and the Museum of the Rockies — home to one of the country's foremost dinosaur collections, much of it dug from the surrounding badlands."}
+      ]
+    }
+  ],
+
+  "packing": {
+    "heading": "What to Bring",
+    "items": [
+      {"label": "Layered Clothing", "body": "Late-September days run 50–60°F, but mornings and 8,000-foot evenings can drop near freezing. Base layer, fleece, and a warm shell — plus gloves and a hat for dawn wildlife drives."},
+      {"label": "Bear Spray", "body": "Non-negotiable in grizzly country. Buy a can in Jackson (you cannot fly with it) and carry it accessible on every hike — not buried in a pack. Know how to use it before you need it."},
+      {"label": "Binoculars & Telephoto", "body": "The wildlife is often distant, and you must keep your distance. Binoculars or a spotting scope, plus your longest lens for the R8, will make the Lamar and Hayden valleys."},
+      {"label": "Waterproof Hiking Boots", "body": "Boardwalks, lake trails, and the real chance of early snow. Broken-in, waterproof boots beat trail runners here."},
+      {"label": "Sun & Altitude Protection", "body": "High-altitude sun is intense even when the air is cool — sunscreen, sunglasses, lip balm, and more water than you think you need."},
+      {"label": "Packed Provisions", "body": "In-park dining is sparse, meat-forward, and far apart. Stock vegetarian picnic supplies in Jackson and again in Gardiner."},
+      {"label": "Travel Coffee Kit", "body": "Lodge coffee is functional at best. A pour-over or AeroPress plus beans from Persephone in Jackson or Treeline in Bozeman is worth the space."},
+      {"label": "Water Bottle & Headlamp", "body": "Refillable bottles for the dry altitude, and a headlamp for pre-dawn wildlife starts and dim lodge rooms."}
+    ],
+    "footnote": "Confirm road, weather, and seasonal-closure status at nps.gov/yell and nps.gov/grte before departure — early-season snow can close high passes on short notice."
+  }
+}

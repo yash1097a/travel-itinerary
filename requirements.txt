@@ -1,0 +1,13 @@
+# Runtime dependencies for the itinerary engine (build_itinerary.py)
+reportlab>=4.0
+geopandas>=1.0
+shapely>=2.0
+pyogrio>=0.8
+matplotlib>=3.7
+numpy>=1.24
+pillow>=10.0
+svglib>=1.5
+jsonschema>=4.0
+
+# Optional — only for the "rasterise every page to verify" step, not the build itself
+pymupdf>=1.24

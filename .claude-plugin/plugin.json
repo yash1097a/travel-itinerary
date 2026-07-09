@@ -1,0 +1,10 @@
+{
+  "name": "travel-itinerary",
+  "version": "1.0.0",
+  "description": "Interactive travel concierge: plan a trip through a guided four-phase conversation and generate a polished, multi-page PDF itinerary. Includes per-user preference profiles created via conversational onboarding.",
+  "author": { "name": "Yash Agarwal" },
+  "homepage": "https://github.com/yash1097a/travel-itinerary",
+  "repository": "https://github.com/yash1097a/travel-itinerary",
+  "license": "MIT",
+  "keywords": ["travel", "itinerary", "pdf", "trip-planner", "concierge", "vacation"]
+}

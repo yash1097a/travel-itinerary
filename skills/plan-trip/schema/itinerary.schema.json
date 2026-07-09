@@ -1,0 +1,321 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://travelspecialist/itinerary.schema.json",
+  "title": "Travel Itinerary",
+  "description": "The single structured contract between the conversational travel agent and the PDF engine. Stores CLEAN, human-readable content only: the engine owns all presentation (letter-spacing, uppercasing, non-breaking-space gaps, route-map drawing, label de-confliction, KeepTogether anti-overflow). Designed for variable day counts and optional sections.",
+  "type": "object",
+  "required": ["meta", "region", "cover", "summary", "map", "days"],
+  "additionalProperties": false,
+
+  "properties": {
+    "meta": {
+      "type": "object",
+      "description": "Document-level metadata and running chrome.",
+      "required": ["doc_kind", "date_label", "nights", "days"],
+      "additionalProperties": false,
+      "properties": {
+        "doc_kind": {"type": "string", "description": "Kind line, e.g. 'A Private Travel Itinerary'. Drives cover kicker + running header.", "examples": ["A Private Travel Itinerary"]},
+        "date_label": {"type": "string", "description": "Human date, e.g. 'October 2026'. Shown on cover + running header.", "examples": ["October 2026"]},
+        "nights": {"type": "integer", "minimum": 0, "description": "Total nights; feeds cover duration label."},
+        "days": {"type": "integer", "minimum": 1, "description": "Total days; must equal len(days[]) unless an intro/outro day is intentionally merged."},
+        "footer_note": {"type": "string", "default": "For personal use only", "description": "Small grey note bottom-left of every body page."},
+        "output_filename": {"type": "string", "default": "Itinerary.pdf", "description": "Base filename for the emitted PDF."},
+        "title": {"type": "string", "description": "PDF document metadata title (defaults to region.title + ' — ' + doc_kind)."},
+        "author": {"type": "string", "default": "Travel Concierge", "description": "PDF document metadata author."}
+      }
+    },
+
+    "region": {
+      "type": "object",
+      "description": "Destination identity shown on the cover and in the running header.",
+      "required": ["title", "subtitle"],
+      "additionalProperties": false,
+      "properties": {
+        "title": {"type": "string", "description": "Big cover title, e.g. 'Pacific Northwest'. Engine uppercases.", "examples": ["Pacific Northwest"]},
+        "subtitle": {"type": "string", "description": "Secondary cover line, e.g. 'Washington & Oregon'. Engine letter-spaces.", "examples": ["Washington & Oregon"]},
+        "waypoints": {"type": "array", "description": "Ordered region waypoints joined with ' | ' under the cover band.", "items": {"type": "string"}, "examples": [["Seattle", "Olympic Peninsula", "Oregon Coast", "Columbia River Gorge"]]}
+      }
+    },
+
+    "cover": {
+      "type": "object",
+      "description": "Cover-page specifics not derivable from region/meta.",
+      "additionalProperties": false,
+      "properties": {
+        "kicker": {"type": "string", "description": "Top letter-spaced kicker. Defaults to meta.doc_kind."},
+        "duration_label": {"type": "string", "description": "Centre line under the date. Defaults to '{nights} Nights · {days} Days'."},
+        "stats": {
+          "type": "array",
+          "description": "2–4 stat boxes on the cover (value + short label).",
+          "minItems": 2, "maxItems": 4,
+          "items": {
+            "type": "object",
+            "required": ["value", "label"],
+            "additionalProperties": false,
+            "properties": {
+              "value": {"type": "string", "description": "Big number/value, e.g. '2'."},
+              "label": {"type": "string", "description": "Short caption, e.g. 'States'. Engine uppercases; use \\n for two lines."}
+            }
+          }
+        }
+      }
+    },
+
+    "summary": {
+      "type": "object",
+      "description": "Summary page: intro + route map + trip-at-a-glance tiles + activity tags + highlight cards.",
+      "required": ["intro"],
+      "additionalProperties": false,
+      "properties": {
+        "route_heading": {"type": "string", "default": "Your Route", "description": "Heading above the intro paragraph."},
+        "intro": {"type": "string", "description": "One justified paragraph describing the route/arc. Plain prose."},
+        "glance_tiles": {
+          "type": "array",
+          "description": "Trip-at-a-glance tiles (value + label). Typically 4.",
+          "minItems": 2, "maxItems": 6,
+          "items": {
+            "type": "object",
+            "required": ["value", "label"],
+            "additionalProperties": false,
+            "properties": {
+              "value": {"type": "string", "description": "e.g. '~500 mi'."},
+              "label": {"type": "string", "description": "Caption; use \\n for two lines, e.g. 'TOTAL\\nDISTANCE'. Engine uppercases."}
+            }
+          }
+        },
+        "activity_tags": {"type": "array", "description": "Pill badges of trip activities. Wrap automatically.", "items": {"type": "string"}},
+        "highlights": {
+          "type": "array",
+          "description": "Highlight cards (one per column). Ideal 3–6.",
+          "minItems": 2, "maxItems": 6,
+          "items": {
+            "type": "object",
+            "required": ["name", "desc"],
+            "additionalProperties": false,
+            "properties": {
+              "name": {"type": "string", "description": "Highlight name, e.g. 'Haystack Rock'."},
+              "desc": {"type": "string", "description": "Short caption, e.g. 'Iconic coastal monolith'."}
+            }
+          }
+        }
+      }
+    },
+
+    "planning": {
+      "type": "object",
+      "description": "Optional Planning page. An ORDERED list of typed sections so trips can add/drop/reorder panels (flights, ground transport, lodging, advance bookings, or any custom info panel). Omit the whole object to skip the Planning page.",
+      "additionalProperties": false,
+      "properties": {
+        "sections": {
+          "type": "array",
+          "description": "Ordered planning panels rendered top-to-bottom.",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "description": "Two-column label/value panel (flights, getting around, advance bookings, etc.).",
+                "required": ["type", "label", "rows"],
+                "additionalProperties": false,
+                "properties": {
+                  "type": {"const": "info"},
+                  "label": {"type": "string", "description": "Section label, e.g. 'Flights'. Engine letter-spaces + uppercases."},
+                  "rows": {
+                    "type": "array", "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "required": ["label", "value"],
+                      "additionalProperties": false,
+                      "properties": {
+                        "label": {"type": "string"},
+                        "value": {"type": "string"}
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "description": "Lodging per night: preferred neighbourhood(s) PLUS a few suggested properties to compare and the rationale — enough for the traveller to make an informed choice, not one prescriptive booking. No prices.",
+                "required": ["type", "label", "rows"],
+                "additionalProperties": false,
+                "properties": {
+                  "type": {"const": "lodging"},
+                  "label": {"type": "string", "description": "Usually 'Where to Stay'."},
+                  "rows": {
+                    "type": "array", "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "required": ["nights", "days", "area", "notes"],
+                      "additionalProperties": false,
+                      "properties": {
+                        "nights": {"type": "string", "description": "e.g. '1', '2 – 3', or '—' for no overnight."},
+                        "days": {"type": "string", "description": "e.g. 'Day 1', 'Days 2–3'."},
+                        "area": {"type": "string", "description": "Preferred neighbourhood(s) to stay in."},
+                        "properties": {
+                          "type": "array",
+                          "description": "Optional — a few suggested properties in that area (ideally 2–3), offered as options to compare rather than a single prescriptive pick. No prices. Each may carry a short reason.",
+                          "items": {
+                            "type": "object",
+                            "required": ["name"],
+                            "additionalProperties": false,
+                            "properties": {
+                              "name": {"type": "string", "description": "Property name, e.g. 'Inn at the Market'."},
+                              "reason": {"type": "string", "description": "Optional short reason this property is suggested, e.g. 'over Pike Place, walk everywhere'."}
+                            }
+                          }
+                        },
+                        "notes": {"type": "string", "description": "Overall rationale for the area + booking guidance, so the traveller can choose informedly."}
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+
+    "map": {
+      "type": "object",
+      "description": "Route map driven by real coordinates, rendered offline on bundled Natural Earth shapefiles in the project palette.",
+      "required": ["stops"],
+      "additionalProperties": false,
+      "properties": {
+        "stops": {
+          "type": "array",
+          "description": "Ordered stops; the gold route line connects them in order.",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": ["name", "lat", "lon"],
+            "additionalProperties": false,
+            "properties": {
+              "name": {"type": "string", "description": "Stop name shown on the map, e.g. 'Seattle'."},
+              "sublabel": {"type": "string", "description": "Small caption under the name, e.g. 'Night 1' or 'Depart PDX'."},
+              "lat": {"type": "number", "minimum": -90, "maximum": 90},
+              "lon": {"type": "number", "minimum": -180, "maximum": 180},
+              "label_offset": {
+                "type": "object",
+                "description": "Optional MANUAL override of label placement when auto de-confliction is imperfect. Prefer leaving unset.",
+                "additionalProperties": false,
+                "properties": {
+                  "dx": {"type": "number", "description": "Longitude offset for the label."},
+                  "dy": {"type": "number", "description": "Latitude offset for the label."},
+                  "va": {"type": "string", "enum": ["top", "center", "bottom"]}
+                }
+              }
+            }
+          }
+        },
+        "bbox": {
+          "type": "array",
+          "description": "Optional [lon_min, lat_min, lon_max, lat_max] override. If omitted the engine auto-fits to the stops with padding.",
+          "items": {"type": "number"},
+          "minItems": 4, "maxItems": 4
+        },
+        "legs": {
+          "type": "array",
+          "description": "Optional drive-time/distance labels drawn on each route leg, in order. Length should be len(stops)-1. e.g. '≈ 3 h · 165 mi'. Omit to draw a plain route line.",
+          "items": {"type": "string"}
+        },
+        "annotations": {
+          "type": "array",
+          "description": "Optional static labels drawn on the map (e.g. state names, a sound). Decorative.",
+          "items": {
+            "type": "object",
+            "required": ["text", "lat", "lon"],
+            "additionalProperties": false,
+            "properties": {
+              "text": {"type": "string"},
+              "lat": {"type": "number"},
+              "lon": {"type": "number"},
+              "size": {"type": "number", "default": 7.5}
+            }
+          }
+        }
+      }
+    },
+
+    "days": {
+      "type": "array",
+      "description": "One entry per day page. Variable length.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["title", "timeline"],
+        "additionalProperties": false,
+        "properties": {
+          "label": {"type": "string", "description": "Day badge override, e.g. '5'. Defaults to the 1-based index."},
+          "title": {"type": "string", "description": "Day title, e.g. 'Drive to Olympic Peninsula'. Engine uppercases."},
+          "subtitle": {"type": "string", "description": "Right-aligned note in the day header, e.g. 'Seattle → Kalaloch Area'."},
+          "timeline": {
+            "type": "array",
+            "description": "Timestamped rows down the page.",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["time", "title"],
+              "additionalProperties": false,
+              "properties": {
+                "time": {"type": "string", "description": "Freeform time label, e.g. '8:00 AM' or 'AFTERNOON'."},
+                "title": {"type": "string", "description": "What happens."},
+                "body": {"type": "string", "description": "Optional detail paragraph."}
+              }
+            }
+          },
+          "where_to_eat": {
+            "type": "array",
+            "description": "Optional teal dining block. Multiple rows of the same category are allowed (e.g. two COFFEE rows).",
+            "items": {
+              "type": "object",
+              "required": ["category", "place"],
+              "additionalProperties": false,
+              "properties": {
+                "category": {"type": "string", "description": "e.g. 'Coffee', 'Lunch', 'Dinner'. Engine uppercases."},
+                "place": {"type": "string", "description": "Recommended place."},
+                "note": {"type": "string", "description": "Optional why/what detail."}
+              }
+            }
+          },
+          "worth_knowing": {
+            "type": "array",
+            "description": "Optional green history/significance block.",
+            "items": {
+              "type": "object",
+              "required": ["place", "blurb"],
+              "additionalProperties": false,
+              "properties": {
+                "place": {"type": "string"},
+                "blurb": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "packing": {
+      "type": "object",
+      "description": "Optional Packing page. Omit to skip.",
+      "additionalProperties": false,
+      "properties": {
+        "heading": {"type": "string", "default": "What to Bring"},
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["label", "body"],
+            "additionalProperties": false,
+            "properties": {
+              "label": {"type": "string", "description": "Item name, e.g. 'Waterproof Hiking Boots'."},
+              "body": {"type": "string", "description": "Why / detail."}
+            }
+          }
+        },
+        "footnote": {"type": "string", "description": "Centered grey note under the packing table."}
+      }
+    }
+  }
+}

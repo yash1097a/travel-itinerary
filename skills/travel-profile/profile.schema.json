@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://travel-itinerary/profile.schema.json",
+  "title": "Traveller Profile",
+  "description": "A traveller's durable preferences. Split into fixed_preferences (always apply) and ask_per_trip (collected per trip). Stored per-user, outside the plugin repo.",
+  "type": "object",
+  "required": ["fixed_preferences"],
+  "additionalProperties": true,
+  "properties": {
+    "profile_name": {"type": "string", "description": "Name/label for this profile (e.g. 'default', a person, or a group)."},
+    "_comment": {"type": "string"},
+
+    "fixed_preferences": {
+      "type": "object",
+      "description": "Always apply these to every trip.",
+      "minProperties": 1,
+      "additionalProperties": {"type": "string"},
+      "properties": {
+        "dietary_restrictions": {"type": "string", "description": "Hard rules — vegetarian/vegan/allergies/etc. Use 'none' if unrestricted."},
+        "dietary_preferences": {"type": "string", "description": "Likes/dislikes — cuisines, coffee, alcohol, local-specialty appetite."},
+        "photography": {"type": "string", "description": "Camera and photography interests, if any."},
+        "activities": {"type": "string", "description": "Durable activity likes (hikes, drives, water sports, etc.)."},
+        "pace": {"type": "string", "description": "How active/relaxed trips should be."},
+        "flights": {"type": "string", "description": "Home airport(s), airline loyalty, and flexibility."},
+        "lodging_structure": {"type": "string", "description": "How lodging should be presented (default: neighbourhood + 2-3 suggested properties + rationale, no prices)."},
+        "other": {"type": "string", "description": "Anything else durable."}
+      }
+    },
+
+    "ask_per_trip": {
+      "type": "object",
+      "description": "Vary by trip — the planner asks these in Phase 1 rather than assuming.",
+      "additionalProperties": {"type": "string"}
+    },
+
+    "lodging_style_framework": {
+      "type": "object",
+      "description": "Optional rules mapping trip type -> lodging style, used when asking per trip.",
+      "additionalProperties": {"type": "string"}
+    }
+  }
+}

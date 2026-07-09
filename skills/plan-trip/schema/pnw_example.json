@@ -1,0 +1,239 @@
+{
+  "meta": {
+    "doc_kind": "A Private Travel Itinerary",
+    "date_label": "October 2026",
+    "nights": 4,
+    "days": 5,
+    "footer_note": "For personal use only",
+    "output_filename": "PNW_Itinerary.pdf",
+    "author": "Travel Concierge"
+  },
+
+  "region": {
+    "title": "Pacific Northwest",
+    "subtitle": "Washington & Oregon",
+    "waypoints": ["Seattle", "Olympic Peninsula", "Oregon Coast", "Columbia River Gorge"]
+  },
+
+  "cover": {
+    "stats": [
+      {"value": "2", "label": "States"},
+      {"value": "4", "label": "Nights"},
+      {"value": "5", "label": "Days"}
+    ]
+  },
+
+  "summary": {
+    "route_heading": "Your Route",
+    "intro": "A one-way road trip through two of the Northwest's most distinct landscapes — the temperate rainforest and wild coast of Olympic National Park, the Oregon coast, and the Columbia River Gorge. Fly into Seattle, drive a natural southward arc, and catch a red-eye home from Portland.",
+    "glance_tiles": [
+      {"value": "42–62°F", "label": "Temperature\nRange"},
+      {"value": "~14 hrs", "label": "Total Time\non the Road"},
+      {"value": "~500 mi", "label": "Total\nDistance"},
+      {"value": "3 of 5", "label": "Days with\nDriving"}
+    ],
+    "activity_tags": [
+      "Coastal Hiking", "Rainforest Walks", "Scenic Drives",
+      "Tide Pooling", "Wildlife Watching", "Waterfall Viewing"
+    ],
+    "highlights": [
+      {"name": "Ruby Beach", "desc": "Sea stacks & driftwood"},
+      {"name": "Hoh Rainforest", "desc": "Moss-draped ancient trees"},
+      {"name": "Haystack Rock", "desc": "Iconic coastal monolith"},
+      {"name": "Multnomah Falls", "desc": "620-ft twin-tier falls"},
+      {"name": "Columbia Gorge", "desc": "Canyon views & orchards"}
+    ]
+  },
+
+  "planning": {
+    "sections": [
+      {
+        "type": "info",
+        "label": "Flights",
+        "rows": [
+          {"label": "Arrival Airport", "value": "Seattle — SEA (Seattle-Tacoma International)"},
+          {"label": "Arrival Timing", "value": "Day 1, early-to-mid afternoon landing (by ~2:00 PM ideally)"},
+          {"label": "Departure Airport", "value": "Portland — PDX (Portland International)"},
+          {"label": "Departure Timing", "value": "Day 5, red-eye — depart ~10:00 PM–12:00 AM, landing NYC ~6:00–7:00 AM Day 6"},
+          {"label": "Booking Note", "value": "Book as multi-city (JFK/EWR → SEA outbound, PDX → JFK/EWR return). Alaska is the dominant carrier on both legs; Delta and United also fly nonstop. Aim for 6–8 weeks out."}
+        ]
+      },
+      {
+        "type": "info",
+        "label": "Getting Around",
+        "rows": [
+          {"label": "Pick Up", "value": "Seattle (SEA) — Day 1, on arrival"},
+          {"label": "Drop Off", "value": "Portland (PDX) — Day 5, evening, ahead of the red-eye"},
+          {"label": "Vehicle & Driving", "value": "AWD crossover or small SUV — Olympic Peninsula roads are frequently wet in October. ~500 miles across three driving days (Day 2, 4, 5)."},
+          {"label": "Booking Note", "value": "One-way rental — book as soon as travel dates are set; one-way drop inventory is more limited than round-trip."}
+        ]
+      },
+      {
+        "type": "lodging",
+        "label": "Where to Stay",
+        "rows": [
+          {"nights": "1", "days": "Day 1", "area": "Seattle — Pike Place / Belltown",
+           "properties": [
+             {"name": "Inn at the Market", "reason": "above Pike Place, walk everywhere"},
+             {"name": "Thompson Seattle", "reason": "design hotel with a rooftop bar"},
+             {"name": "The State Hotel", "reason": "central boutique, good value"}
+           ],
+           "notes": "Urban and walkable; book 4–6 weeks out."},
+          {"nights": "2 – 3", "days": "Days 2–3", "area": "Kalaloch — Olympic coast strip",
+           "properties": [
+             {"name": "Kalaloch Lodge", "reason": "the only true oceanfront option"},
+             {"name": "Lake Quinault Lodge", "reason": "historic fallback ~40 min south"}
+           ],
+           "notes": "Oceanfront but isolated; dining is scarce, so book very early."},
+          {"nights": "4", "days": "Day 4", "area": "Cannon Beach — town centre, beachfront",
+           "properties": [
+             {"name": "Stephanie Inn", "reason": "oceanfront, adults-oriented, top-tier"},
+             {"name": "Surfsand Resort", "reason": "on the beach facing Haystack Rock"},
+             {"name": "The Ocean Lodge", "reason": "relaxed beachfront, walk to town"}
+           ],
+           "notes": "Small, walkable beach town; book 4–6 weeks out."},
+          {"nights": "—", "days": "Day 5", "area": "No overnight — depart PDX red-eye",
+           "notes": "Cannon Beach → Gorge → PDX; return car, late departure."}
+        ]
+      },
+      {
+        "type": "info",
+        "label": "Advance Bookings",
+        "rows": [
+          {"label": "Park Pass", "value": "America the Beautiful Annual Pass ($80) — buy online at nps.gov or at the Olympic NP entrance station"},
+          {"label": "Dinner Reservation", "value": "Newman's at 988, Cannon Beach — book 1–2 weeks ahead once Day 4 dates are firm"},
+          {"label": "Trail Status", "value": "Check Hoh Rainforest road and timed-entry status at nps.gov/olym the week before departure"},
+          {"label": "Tide Charts", "value": "Check NOAA tide predictions for Ruby Beach and Cannon Beach the week of Days 3 and 5"}
+        ]
+      }
+    ]
+  },
+
+  "map": {
+    "stops": [
+      {"name": "Seattle", "sublabel": "Night 1", "lat": 47.6062, "lon": -122.3321},
+      {"name": "Kalaloch", "sublabel": "Nights 2–3", "lat": 47.6126, "lon": -124.3736},
+      {"name": "Cannon Beach", "sublabel": "Night 4", "lat": 45.8918, "lon": -123.9615},
+      {"name": "Columbia Gorge", "sublabel": "Day 5 — pass through", "lat": 45.6390, "lon": -121.9000},
+      {"name": "Portland", "sublabel": "Depart PDX", "lat": 45.5152, "lon": -122.6784}
+    ],
+    "legs": [
+      "≈ 3 h · 165 mi",
+      "≈ 4 h · 200 mi",
+      "≈ 2 h · 110 mi",
+      "≈ 1 h · 60 mi"
+    ]
+  },
+
+  "days": [
+    {
+      "title": "Arrive Seattle",
+      "subtitle": "One Urban Night",
+      "timeline": [
+        {"time": "Afternoon", "title": "Land at SEA, pick up your rental car", "body": "Most nonstop flights from JFK or EWR land in Seattle by early-to-mid afternoon. Rental desks are at the terminal. Downtown is 30 minutes by surface road, or 25 minutes via Link Light Rail if you'd rather pick up the car in the morning."},
+        {"time": "Late Afternoon", "title": "Pike Place Market", "body": "Walk the stalls — the fish throw, the flower vendors, the produce. Skip the original Starbucks line; the coffee recommendation below is far better."},
+        {"time": "Evening", "title": "Belltown or Capitol Hill", "body": "Both neighbourhoods are a short walk or drive from the market and hold the city's best dining. Early night — Day 2 is a 3-hour drive that benefits from a prompt start."}
+      ],
+      "where_to_eat": [
+        {"category": "Coffee", "place": "Elm Coffee Roasters — Pioneer Square", "note": "10 minutes from Pike Place. One of the finest single-origin espresso bars in the city — minimal, precise, serious about the cup."},
+        {"category": "Lunch", "place": "Cafe Campagne (in the Market)", "note": "French bistro tucked inside Pike Place. The vegetarian tartines and croque-madame (minus the ham) are excellent."},
+        {"category": "Dinner", "place": "The Whale Wins — Eastlake", "note": "Wood-roasted vegetables are the actual star here, not an afterthought — seasonal beet, squash, and grain dishes that hold their own without meat. One of the best vegetarian experiences in Seattle."}
+      ],
+      "worth_knowing": [
+        {"place": "Pike Place Market", "blurb": "Opened in 1907 to let farmers sell directly to the public, cutting out commission merchants entirely — it is one of the oldest continuously operating public farmers markets in the country. By the 1960s the market had fallen into disrepair and faced demolition for redevelopment; a citizen campaign led by architect Victor Steinbrueck saved it, and a 1971 public vote protected it permanently. Today it is a National Historic District with over 500 vendors and residents still living above the stalls."},
+        {"place": "Seattle, in Brief", "blurb": "Built on the traditional land of the Coast Salish peoples, the city took its modern shape as a timber and shipping port before being transformed almost overnight in 1897, when the steamship Portland docked with \"a ton of gold\" from the Klondike — Seattle outfitted tens of thousands of prospectors heading north and never looked back."}
+      ]
+    },
+    {
+      "title": "Drive to Olympic Peninsula",
+      "subtitle": "Seattle → Kalaloch Area",
+      "timeline": [
+        {"time": "8:00 AM", "title": "Leave Seattle", "body": "I-5 south to US-101 west, through Olympia and around the bottom of the Olympic Peninsula. About 3 hours to the Kalaloch area without stops — comfortable, mostly forested driving. Stop in Olympia for coffee and to stock up on provisions: the area around Kalaloch has almost no food infrastructure outside the lodge restaurant."},
+        {"time": "1:00 PM", "title": "Lake Quinault — Optional Stretch Stop", "body": "US-101 skirts the southern shore about 20 minutes before Kalaloch. A short walk through old-growth rainforest here previews tomorrow's Hoh, and the lake itself is worth 30 minutes if you have the time."},
+        {"time": "2:30 PM", "title": "Arrive Kalaloch Area", "body": "This stretch of coast sits on a bluff directly above the Pacific — at high tide the waves crash below. Walk the bluffs and the beach before dinner; the driftwood formations are photogenic, and early-October light here can be dramatic."}
+      ],
+      "where_to_eat": [
+        {"category": "Coffee", "place": "Batdorf and Bronson — Olympia (en route)", "note": "One of the great Pacific Northwest specialty roasters, directly on your route through Olympia. The Dancing Goats espresso is a classic."},
+        {"category": "Lunch", "place": "Pack provisions in Olympia", "note": "The Olympia Food Co-op is an excellent stop for vegetarian picnic supplies — pack enough for tomorrow's full day in the Hoh as well."},
+        {"category": "Dinner", "place": "Lodge restaurant, Kalaloch", "note": "The on-site restaurant is the only practical option this evening. The seasonal menu includes vegetarian dishes — ask what's available. The ocean view from the dining room is the real draw."}
+      ],
+      "worth_knowing": [
+        {"place": "Olympic National Park", "blurb": "Established in 1938 by Franklin D. Roosevelt after a personal visit two years earlier, the park protects an almost unheard-of range of ecosystems within one boundary — glaciated peaks, old-growth temperate rainforest, and over 70 miles of wild Pacific coastline. UNESCO designated it a World Heritage Site in 1981 and an International Biosphere Reserve, recognizing an ecological completeness found in very few places left on Earth."},
+        {"place": "Lake Quinault & the Quinault Rainforest", "blurb": "The lake and surrounding rainforest sit on the ancestral homeland of the Quinault Indian Nation, who still manage the southern shore today. The valley holds some of the largest individual trees on the planet, including the world-record Sitka spruce — over 1,000 years old and nearly 58 feet in circumference, a short detour from the road you'll be driving."}
+      ]
+    },
+    {
+      "title": "Ruby Beach + Hoh Rainforest",
+      "subtitle": "Full Olympic Day",
+      "timeline": [
+        {"time": "8:30 AM", "title": "Ruby Beach", "body": "17 miles north on US-101. Arrive before the lot fills — mid-morning is busiest. A short, steep trail drops onto a beach of huge sea stacks and driftwood, with tide pools at lower tides. October fog often lifts by mid-morning to reveal the full scale of the landscape. Bring your widest lens."},
+        {"time": "11:00 AM", "title": "Hoh Rainforest", "body": "17 more miles north, then 17 miles inland. The Hall of Mosses Trail (0.8 miles, flat) is the centrepiece — Bigleaf Maples draped in luminescent moss, turning gold over the green in October. Extend onto the Hoh River Trail for more immersion. Roosevelt elk are often visible in the open meadows. Arrive before 10am where possible — ranger-controlled timed access on busy days can mean waits of up to two hours at the checkpoint 5 miles out."},
+        {"time": "4:00 PM", "title": "Return to Kalaloch", "body": "Stop at any of the numbered beaches along US-101 on the way back (Beach 4 has accessible tide pool viewing). Aim to be back for sunset over the Pacific from the bluffs."}
+      ],
+      "where_to_eat": [
+        {"category": "Coffee", "place": "Lodge restaurant, Kalaloch", "note": "Get an early cup before the drive to Ruby Beach — the cafe opens early."},
+        {"category": "Lunch", "place": "Packed provisions — essential", "note": "No food at Ruby Beach or beyond the Hoh visitor centre kiosk. Use what you packed in Olympia."},
+        {"category": "Dinner", "place": "Lodge restaurant, Kalaloch", "note": "Same restaurant as the previous night — vary your order, and ask about that evening's vegetarian specials."}
+      ],
+      "worth_knowing": [
+        {"place": "Ruby Beach", "blurb": "Named for the small garnet crystals that wash down from inland deposits and catch the light in the sand at the tideline. It sits inside the Olympic Coast National Marine Sanctuary, one of the largest protected marine areas in the country, and the sea stacks offshore are the eroded remnants of a coastline that has been retreating for thousands of years."},
+        {"place": "Hoh Rainforest", "blurb": "One of the only temperate rainforests in the continental United States, fed by 140 to 170 inches of rain a year. The valley is also home to the \"One Square Inch of Silence\" project, an effort by acoustic ecologist Gordon Hempton to preserve a single spot recognized as one of the quietest places left in the country — a useful thing to know before you find yourself instinctively lowering your voice on the trail."}
+      ]
+    },
+    {
+      "title": "Drive to Cannon Beach",
+      "subtitle": "via Astoria",
+      "timeline": [
+        {"time": "8:30 AM", "title": "Leave Kalaloch — Drive South on US-101", "body": "About 4 hours total to Cannon Beach including the Astoria stop. The highway runs close to the coast for most of the drive."},
+        {"time": "12:30 PM", "title": "Astoria, Oregon", "body": "Cross into Oregon via the 4-mile Astoria-Megler Bridge over the mouth of the Columbia. Astoria is a genuine Victorian port town worth an hour. Lunch downtown, then drive up to the Astoria Column on Coxcomb Hill — a 125-foot tower on a 600-foot bluff with panoramic views of the river, the bridge, and the coast. 164 steps; allow 45 minutes total."},
+        {"time": "3:00 PM", "title": "Cannon Beach — Haystack Rock", "body": "25 miles south of Astoria. The 235-foot basalt monolith rises directly from the beach and can be walked around at low tide — check tide charts in advance. Near-empty in October, with excellent afternoon light. This is a small, walkable town — most lodging sits within a few blocks of the beach."}
+      ],
+      "where_to_eat": [
+        {"category": "Coffee", "place": "Pilot House Coffee — Astoria (en route)", "note": "A local specialty roaster in Astoria's historic downtown — worth the stop before the Column."},
+        {"category": "Lunch", "place": "Street 14 Cafe — Astoria", "note": "Vegetarian-friendly grain bowls and seasonal vegetable plates, consistently good."},
+        {"category": "Coffee", "place": "Sleepy Monk Coffee Roasters — Cannon Beach", "note": "A Cannon Beach institution; small-batch organic roasting at a walk-up window. Grab a bag of beans for Day 5."},
+        {"category": "Dinner", "place": "Newman's at 988 — Cannon Beach", "note": "The best restaurant in town by a margin — genuine composed vegetarian dishes, not token sides. Reserve ahead; it fills even in October. Casual alternative: Pizza a'fetta for wood-fired vegetarian pizza."}
+      ],
+      "worth_knowing": [
+        {"place": "Astoria", "blurb": "Founded in 1811 as a fur-trading post for John Jacob Astor's Pacific Fur Company, Astoria is the oldest American settlement west of the Rockies — predating Oregon statehood by nearly five decades. Lewis and Clark's expedition wintered just across the river at Fort Clatsop in 1805–06, having finally reached the Pacific."},
+        {"place": "The Astoria Column", "blurb": "Built in 1926, funded jointly by the Great Northern Railway and Vincent Astor (a descendant of John Jacob), and modeled directly on Trajan's Column in Rome. A hand-painted frieze spirals up the exterior depicting the region's history, from early Indigenous life through the arrival of the railroad."},
+        {"place": "Haystack Rock", "blurb": "At 235 feet, this is the third-tallest sea stack in the world, formed by Columbia River basalt lava flows roughly 15 to 17 million years ago that once reached the coast. It has been a protected Marine Garden and bird sanctuary since 1990, home to one of the few mainland-accessible tufted puffin colonies on the Oregon coast."}
+      ]
+    },
+    {
+      "title": "Columbia River Gorge",
+      "subtitle": "Fly Home — Red-Eye",
+      "timeline": [
+        {"time": "7:30 AM", "title": "Sunrise at Haystack Rock, then depart", "body": "Walk the beach before checkout — near-empty at this hour, with the best light of the day on the rock. Grab a Sleepy Monk coffee to go; the window opens early. Leave Cannon Beach by 10:30am."},
+        {"time": "12:00 PM", "title": "Columbia River Gorge — Crown Point + Multnomah Falls", "body": "About 1.5 hours east via US-26 and I-84, entering the gorge near Troutdale. Crown Point's Vista House (a 1918 octagonal rotunda 733 feet above the river) is a 10-minute stop with the single best view of the gorge. Continue to Multnomah Falls — 620 feet in two tiers, with a historic stone footbridge at mid-level. The 0.3-mile base walk is flat and easy; waterfalls run fuller in October than summer. Allow 1.5 hours."},
+        {"time": "2:30 PM", "title": "Hood River — Late Lunch", "body": "30 miles further east. A genuine small town with an excellent food scene built around the surrounding orchards, at peak harvest in October — grab apples or pears from any roadside stand. Allow 2 hours; this is your last proper meal before the flight."},
+        {"time": "5:30 PM", "title": "Return to Portland — Red-Eye Departure", "body": "60 miles west on I-84, about an hour. Return the rental at PDX and allow 90 minutes before boarding. Most red-eyes to JFK or EWR depart between 10:00 PM and midnight, landing in New York by 6:00–7:00 AM the next morning."}
+      ],
+      "where_to_eat": [
+        {"category": "Coffee", "place": "Sleepy Monk, to go — Cannon Beach (morning)", "note": "Get a cup and a bag of beans before leaving the coast."},
+        {"category": "Coffee", "place": "Dog River Coffee — Hood River", "note": "The local institution — excellent espresso, comfortable space."},
+        {"category": "Lunch", "place": "Celilo Restaurant — Hood River", "note": "Farm-to-table and genuinely seasonal, with vegetarian dishes that treat plants as the main event rather than a side. The meal to linger over. Casual alternative: pFriem Family Brewers, for excellent craft beer alongside a strong food menu."}
+      ],
+      "worth_knowing": [
+        {"place": "Columbia River Gorge", "blurb": "The canyon was carved over millions of years, then dramatically reshaped near the end of the last Ice Age by the Missoula Floods — a series of catastrophic glacial outburst floods that scoured the basalt walls you'll be driving through. In 1986 Congress designated it the first National Scenic Area in the country."},
+        {"place": "Multnomah Falls & Vista House", "blurb": "At 620 feet, Multnomah Falls is the second-tallest year-round waterfall in the US, named for the Multnomah people who historically lived along the river. The Benson Bridge partway up was funded by timber baron Simon Benson in 1914. A short drive away, Crown Point's Vista House was built in 1916–18 as both a memorial to Oregon pioneers and a rest stop for early motorists on one of the country's first scenic highways."},
+        {"place": "Hood River", "blurb": "Known as the \"Windsurfing Capital of the World\" for the reliable gorge winds that funnel between the Cascades, and a major fruit-growing region since the late 1800s — the valley you're driving through still supplies a meaningful share of the country's pears."}
+      ]
+    }
+  ],
+
+  "packing": {
+    "heading": "What to Bring",
+    "items": [
+      {"label": "Waterproof Everything", "body": "Rain jacket, waterproof pants, a waterproof bag cover. The Olympic Peninsula receives over 140 inches of rain per year, and October is wet. This is not the trip for Gore-Tex to stay in the bag."},
+      {"label": "Layering System", "body": "Base layer, fleece mid-layer, waterproof shell. Temperatures range from roughly 42F overnight to 60F during the day on the coast; the gorge runs slightly warmer."},
+      {"label": "Waterproof Hiking Boots", "body": "Hoh Rainforest trails are muddy in October, and Ruby Beach requires crossing a small creek. Trail runners will fail you within 20 minutes."},
+      {"label": "Camera Gear", "body": "A rain cover for the R8, a lens cloth, and a dry bag for the kit. Rain is the issue here, not condensation."},
+      {"label": "Tide Charts", "body": "Check NOAA tide predictions for Ruby Beach and Cannon Beach before each relevant day — tide pool access and beach walkability around Haystack Rock depend on the tidal state."},
+      {"label": "Packed Lunches", "body": "No food infrastructure at Ruby Beach, the Hoh Rainforest, or the gorge waterfall section. Stock up in Olympia on Day 2 and again in Cannon Beach on Day 4."},
+      {"label": "Binoculars", "body": "Useful for the Hoh Valley (Roosevelt elk, osprey) and the Oregon coast (seabirds around Haystack Rock)."},
+      {"label": "Travel Coffee Kit", "body": "A small pour-over or AeroPress is worth packing for the Kalaloch nights, where lodge coffee is functional but unremarkable. Pick up beans at Batdorf and Bronson in Olympia or Sleepy Monk in Cannon Beach along the way."}
+    ],
+    "footnote": "Check Olympic National Park road and facility status at nps.gov/olym before departure. Hoh Rainforest timed-entry information is updated on the NPS website."
+  }
+}
