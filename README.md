@@ -6,6 +6,8 @@ itinerary**. Each person keeps their **own preference profile**, stored locally 
 machine — nothing personal is shipped with the plugin.
 
 Two skills:
+- **`init`** — the friendly front door: readies the backend, greets you, and shows a menu of what
+  you can do. **Start here.**
 - **`plan-trip`** — the planner: Brief → Activities → Outline → Generate, each gated, ending
   in a downloadable PDF.
 - **`travel-profile`** — conversational onboarding + manage your profile (create / list / show /
@@ -29,8 +31,11 @@ your phone or any computer.
 
 ## Use
 
-1. **First time:** run `/travel-itinerary:travel-profile` (or just say *"set up my travel
-   profile"*). It interviews you and saves your preferences locally.
+Just run **`/travel-itinerary:init`** (or say *"get started"*). It sets things up, greets you,
+and shows your options. From there:
+
+1. **First time:** `/travel-itinerary:travel-profile` (or *"set up my travel profile"*) — a quick
+   interview that saves your preferences locally.
 2. **Plan:** `/travel-itinerary:plan-trip` — or say *"plan a relaxed 6-day trip to Portugal in
    October."* Answer through the phases, approve at each gate, and download the PDF.
 
@@ -50,6 +55,7 @@ If you run the planner before creating a profile, it will offer to onboard you f
 ```
 .claude-plugin/  plugin.json, marketplace.json
 skills/
+  init/          SKILL.md, status.py           (welcome + backend readiness)
   plan-trip/     SKILL.md, build_itinerary.py, fetch_data.py, STYLE.md,
                  schema/ (contract + validator + 2 example itineraries),
                  assets/ (EB Garamond font, Tabler icons)
