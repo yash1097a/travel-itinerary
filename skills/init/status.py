@@ -54,6 +54,17 @@ def map_cached(root):
     return all(os.path.exists(os.path.join(ne, l, l + ".shp")) for l in MAP_LAYERS)
 
 
+def research_depth(root, active):
+    """Read settings.research_depth from the active profile (default 'light')."""
+    if not active:
+        return None
+    try:
+        obj = json.load(open(os.path.join(root, "profiles", active + ".json"), encoding="utf-8"))
+        return (obj.get("settings") or {}).get("research_depth") or "light"
+    except Exception:
+        return "light"
+
+
 def main():
     root = data_root()
     miss = missing_deps()
@@ -62,9 +73,12 @@ def main():
 
     print("Travel Itinerary - status")
     print("  Dependencies: " + ("OK" if not miss else "MISSING (" + ", ".join(miss) + ")"))
+    depth = research_depth(root, active)
     if names:
         print("  Profiles: {} ({})".format(len(names), ", ".join(names)))
         print("  Active profile: " + (active or "none set"))
+        if depth:
+            print("  Research depth: " + depth)
     else:
         print("  Profiles: none yet")
     print("  Map data: " + ("cached (offline-ready)" if cached
@@ -72,7 +86,7 @@ def main():
     print("  Data dir: " + root)
     print("STATUS_JSON=" + json.dumps({
         "deps_missing": miss, "profiles": names, "active": active,
-        "map_cached": cached, "data_dir": root,
+        "research_depth": depth, "map_cached": cached, "data_dir": root,
     }))
 
 

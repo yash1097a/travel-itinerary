@@ -38,7 +38,36 @@ folder — locate and run it there.)*
 - If it exits with `NO_ACTIVE_PROFILE` (or errors), the user has **no profile yet** — say so and
   run the **`travel-profile` onboarding** to create one, then continue.
 
+Also read **`settings.research_depth`** (`"light"` or `"heavy"`; default **light** if absent) —
+it governs how much research you do. See **Research depth** below.
+
 Preferences are per-traveller **data**, never hardcoded here.
+
+---
+
+## Research depth (respect the profile setting)
+
+The profile's `settings.research_depth` controls how hard you research. **Confirm it at the start
+of Phase 2** and allow a one-off override for this trip ("use heavy research this time"). It only
+changes *how much you verify* — every trip still produces a complete, polished itinerary.
+
+**Light (default — protects usage limits):**
+- Lean on your **own knowledge** for candidate activities, dining, and history.
+- **Do not spawn research subagents and do not fan out.** Keep web use to a **few targeted checks
+  only** for the highest-risk, date-critical facts: seasonal open/closed, major closures, and
+  anything that would ruin the trip if wrong (a handful of lookups total, not per-item).
+- Keep the candidate superset focused (~8–12 strong options, not exhaustive).
+- **Be transparent:** briefly note that hours, current closures, and prices should be reconfirmed
+  before booking, since you kept research light.
+- **Reliably finish within limits** — never leave a plan half-done. If you're running long, narrow
+  scope rather than stall.
+
+**Heavy (for users with generous allowances):**
+- Verify extensively against **primary/official sources** (see *Research guidance*); cross-check
+  seasonal conditions, dining vegetarian options, and current status per stop.
+- You may **fan out research subagents** or use a deep-research skill for the candidate-gathering
+  phase, and build a larger, well-vetted superset.
+- Higher token cost — appropriate only when the user has the allowance.
 
 ---
 
@@ -62,9 +91,13 @@ sights?"* Wait for approval.
 
 **Goal:** a final, agreed list of activities/sights.
 
-1. **Research a superset** of candidate activities and sights for the destination and season
-   (see *Research guidance*). Include the obvious must-dos and a few lesser-known gems that fit
-   the loaded profile (their food, photography, and activity preferences; the trip's focus).
+First, **confirm the research depth** for this trip (from `settings.research_depth`; offer to
+override just this once). Then research **at that depth** — see *Research depth* above.
+
+1. **Research a superset** of candidate activities and sights for the destination and season, at
+   the confirmed depth (see *Research guidance* and *Research depth*). Include the obvious must-dos
+   and a few lesser-known gems that fit the loaded profile (their food, photography, and activity
+   preferences; the trip's focus).
 2. **Present the superset** grouped sensibly (by area or theme) and let the traveller pick.
 3. **Give real feedback** on their choices — this is a concierge, not an order-taker:
    - flag **overlap** (two stops that deliver the same experience),

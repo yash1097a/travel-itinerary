@@ -37,6 +37,19 @@
       "type": "object",
       "description": "Optional rules mapping trip type -> lodging style, used when asking per trip.",
       "additionalProperties": {"type": "string"}
+    },
+
+    "settings": {
+      "type": "object",
+      "description": "Plugin behaviour settings for this traveller.",
+      "additionalProperties": true,
+      "properties": {
+        "research_depth": {
+          "type": "string",
+          "enum": ["light", "heavy"],
+          "description": "How much research the planner does. 'light' relies mainly on built-in knowledge with a few targeted checks — fast, reliable to finish, and easy on usage limits (default). 'heavy' verifies extensively against live sources and may fan out research agents — more thorough, but uses much more of your usage allowance."
+        }
+      }
     }
   }
 }

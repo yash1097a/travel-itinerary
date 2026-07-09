@@ -45,6 +45,15 @@ Offer sensible defaults and let them skip. Cover these dimensions, then assemble
 - **Lodging style framework** — e.g. *beach/hills retreat → boutique/resort*; *city/parks/new
   country → well-located but cost-optimised*. Capture their rule.
 
+**Settings:**
+- **Research depth** — explain plainly and let them choose:
+  *"When I plan, I can do **light** research (I lean on what I already know plus a few key checks
+  — fast, reliable to finish, and easy on your usage limits) or **heavy** research (I verify
+  everything against live sources and dig deep — more thorough, but it uses a lot more of your
+  usage allowance and can stall on stricter plans)."*
+  Recommend **light** unless they know they have generous limits. Store as `settings.research_depth`
+  = `"light"` or `"heavy"`. Default to `"light"` if they're unsure.
+
 **Then save it.** Build a JSON object shaped like `profile.schema.json`:
 
 ```json
@@ -55,7 +64,8 @@ Offer sensible defaults and let them skip. Cover these dimensions, then assemble
     "activities": "...", "pace": "...", "flights": "...", "lodging_structure": "..."
   },
   "ask_per_trip": { "group": "...", "budget": "...", "interests": "...", "lodging_style": "..." },
-  "lodging_style_framework": { "...": "..." }
+  "lodging_style_framework": { "...": "..." },
+  "settings": { "research_depth": "light" }
 }
 ```
 

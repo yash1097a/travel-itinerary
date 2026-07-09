@@ -55,9 +55,14 @@ Use this structure (adapt the wording, keep the invocations exact):
 > | 🧭 | **Plan a trip** — a guided, four-phase flow that ends in a polished PDF itinerary | `/travel-itinerary:plan-trip` — or just say *"plan a 6-day trip to Portugal in October"* |
 > | 👤 | **Set up your preferences** — a quick interview so trips fit you (diet, activities, flights, pace…) | `/travel-itinerary:travel-profile` — or *"set up my travel profile"* |
 > | 🗂️ | **Manage profiles** — view, edit, switch, or delete (keep separate ones, e.g. personal vs family) | `/travel-itinerary:travel-profile` — or *"list my profiles"* |
+> | 🔎 | **Research depth** — *light* (fast, easy on usage limits) or *heavy* (deeper, uses more allowance) | change via `/travel-itinerary:travel-profile` — or *"switch to light/heavy research"* |
 > | ℹ️ | **See this menu again** | `/travel-itinerary:init` |
 >
 > *Tip: your preferences and downloaded map data stay on your device — nothing personal is shared.*
+
+If a profile exists, add a one-line note of the current **research depth** from the status (e.g.
+"Research depth: light — I'll keep research efficient and easy on your usage limits."), so users on
+tight allowances know they're protected and how to change it.
 
 Then ask what they'd like to do, and **offer to start the most likely next step immediately**
 (onboarding if no profile, otherwise planning) so they don't have to type a command.

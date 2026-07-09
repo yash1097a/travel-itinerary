@@ -6,7 +6,7 @@
       "name": "travel-itinerary",
       "source": "./",
       "description": "Plan trips through a guided four-phase conversation and generate a polished PDF itinerary. Includes per-user preference profiles and a friendly init menu.",
-      "version": "1.1.1",
+      "version": "1.2.0",
       "keywords": ["travel", "itinerary", "pdf", "trip-planner"]
     }
   ]
