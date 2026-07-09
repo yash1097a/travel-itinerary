@@ -19,13 +19,19 @@ python3 "$CLAUDE_PLUGIN_ROOT/skills/init/status.py"
 *(If `$CLAUDE_PLUGIN_ROOT` isn't set, `status.py` is in this skill's folder — find and run it.)*
 
 Read the `STATUS_JSON=...` line it prints:
-- **If `deps_missing` is non-empty**, install them once, then re-run the status check:
+- **If `deps_missing` is non-empty**, install them once:
   ```bash
   pip install -r "$CLAUDE_PLUGIN_ROOT/requirements.txt"
   ```
   Mention briefly that you set up the tools. Don't dump pip output on the user.
-- **Do not** pre-download the map data here (it's ~70 MB and fetches automatically on the first
-  trip). Just note its state if asked.
+- **If `map_cached` is false**, pre-download the map data now so the first trip doesn't pause for
+  it. Tell the user you're doing a one-time map setup (~70 MB), then run:
+  ```bash
+  python3 "$CLAUDE_PLUGIN_ROOT/skills/plan-trip/fetch_data.py"
+  ```
+  This is idempotent — it downloads only what's missing and is an instant no-op once cached. If
+  the download fails (e.g. no network), don't block the greeting: note that maps will be fetched
+  on the first trip instead, and carry on.
 
 ## 2. Greet + show the menu
 
