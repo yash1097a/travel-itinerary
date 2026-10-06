@@ -1,7 +1,7 @@
 {
   "meta": {
     "doc_kind": "A Private Travel Itinerary",
-    "date_label": "October 8 – 12, 2026",
+    "date_label": "October 7 – 12, 2026",
     "nights": 5,
     "days": 5,
     "footer_note": "For personal use only · Reconfirm hours before travel",
@@ -13,7 +13,7 @@
     "title": "San Diego",
     "subtitle": "North County Coast & the City",
     "waypoints": [
-      "Del Mar",
+      "Solana Beach",
       "Encinitas",
       "La Jolla",
       "Little Italy",
@@ -38,14 +38,14 @@
         "label": "Michelin\nStar"
       },
       {
-        "value": "6:20",
-        "label": "Monday\nSunset"
+        "value": "10:20",
+        "label": "Red-Eye\nOut"
       }
     ]
   },
   "summary": {
     "route_heading": "Your Route",
-    "intro": "This is a base-and-spoke trip, not a road trip. Del Mar anchors all five nights and the days radiate out from it: north up Historic Highway 101 to a bluff at Swami's, south into the city for a farmers market, murals painted on freeway pylons, and a park built for a world's fair. Two rules hold it together. Nothing depends on the shared car, and every day carries a low-effort spine with the demanding pieces left as decisions you make that morning.",
+    "intro": "This is a base-and-spoke trip, not a road trip. Seascape Sur in Solana Beach anchors all five nights and the days radiate out from it: north up Historic Highway 101 to a bluff at Swami's, south into the city for a farmers market, murals on freeway pylons, and a park built for a world's fair. Four narrow windows shape it — a late Thursday dinner, a Friday that ends at the airport, a Saturday that stops at three, and a Monday that runs to a red-eye.",
     "glance_tiles": [
       {
         "value": "~75°F",
@@ -56,8 +56,8 @@
         "label": "Rain, All\nof October"
       },
       {
-        "value": "$15",
-        "label": "Saturday\nby Rail"
+        "value": "$5",
+        "label": "Saturday\nParking"
       },
       {
         "value": "6:20 PM",
@@ -76,14 +76,14 @@
     "highlights": [
       {
         "name": "Chicano Park",
-        "desc": "The world's largest Chicano murals"
+        "desc": "The largest Chicano murals"
       },
       {
-        "name": "Little Italy Mercato",
+        "name": "The Mercato",
         "desc": "Six blocks, Saturday morning"
       },
       {
-        "name": "Wayfarer & Bird Rock",
+        "name": "Wayfarer Bakery",
         "desc": "The croissant and the roast"
       },
       {
@@ -104,23 +104,49 @@
     "sections": [
       {
         "type": "info",
+        "label": "Flights",
+        "rows": [
+          {
+            "label": "In",
+            "value": "UA1626, Wed Oct 7, into Terminal 2. Reconfirm on united.com — this flight number rotates routes."
+          },
+          {
+            "label": "Out",
+            "value": "UA1827, Mon Oct 12, SAN 10:20 PM → Newark 6:37 AM. Terminal 2, 737 MAX 8."
+          },
+          {
+            "label": "Bag drop",
+            "value": "United takes checked bags from about 6:20 PM. There is no luggage storage at SAN."
+          },
+          {
+            "label": "Airport run",
+            "value": "22 miles, about 26 min from the rental off-peak."
+          }
+        ]
+      },
+      {
+        "type": "info",
         "label": "Your Base",
         "rows": [
           {
-            "label": "Del Mar",
-            "value": "Your anchor for all five nights, already arranged."
+            "label": "Seascape Sur",
+            "value": "521 S Sierra Ave, Solana Beach 92075. Gated, bluff-top, five nights."
+          },
+          {
+            "label": "Beach access",
+            "value": "Use Fletcher Cove, 10 min north — it has a paved ramp and handrails. The complex's own access is stairs."
+          },
+          {
+            "label": "On foot",
+            "value": "Seven Seas Roasting 13 min · Culture Brewing 16 · COASTER station 18 · Pizza Port 20."
           },
           {
             "label": "Northward",
-            "value": "Solana Beach 8 min · Encinitas 12 · Carlsbad 18 · Oceanside 24."
+            "value": "Encinitas 10 min · Carlsbad 15 · Oceanside 22."
           },
           {
             "label": "Southward",
-            "value": "La Jolla 20 min · Balboa Park 28 · Little Italy 28 · Point Loma 33."
-          },
-          {
-            "label": "Rush hour",
-            "value": "I-5 at Sorrento Valley is a standstill 4–6:30 PM. Head north before 3 or after 7."
+            "value": "Torrey Pines Extension 8 min · La Jolla 24 · Balboa Park 25 · Little Italy 28."
           }
         ]
       },
@@ -130,27 +156,23 @@
         "rows": [
           {
             "label": "The car",
-            "value": "Shared and unpredictable, so nothing here depends on it."
+            "value": "Yours every day, so every drive below assumes it."
           },
           {
-            "label": "COASTER rail",
-            "value": "Solana Beach to downtown in 36 min. Station parking is free, 319 spaces."
+            "label": "Rush hour",
+            "value": "I-5 at Sorrento Valley is a standstill 4–6:30 PM. Head north before 3 or after 7."
           },
           {
-            "label": "Day pass",
-            "value": "COASTER Regional Day Pass, about $15, covers the trolley too. Tap before boarding."
+            "label": "Saturday parking",
+            "value": "610 W Ash St garage, $5 all day at weekends. Street meters are enforced Saturdays."
           },
           {
-            "label": "Blue Line",
-            "value": "Barrio Logan station sits at Chicano Park. Every 15 minutes."
+            "label": "Balboa Park",
+            "value": "Now paid. Lower Inspiration Point gives the first three hours free."
           },
           {
-            "label": "Rideshare",
-            "value": "Del Mar to downtown $40–48 · La Jolla $24–28 · the airport $55."
-          },
-          {
-            "label": "Booked taxis",
-            "value": "North County Cab or Solana Beach Taxi for trailheads and after dark."
+            "label": "If you're drinking",
+            "value": "COASTER from Solana Beach to downtown in 36 min; station parking free. Sparse at weekends — check PRONTO."
           }
         ]
       },
@@ -164,15 +186,15 @@
           },
           {
             "label": "Buona Forchetta",
-            "value": "OpenTable, Encinitas, for Friday dinner."
+            "value": "OpenTable, Encinitas, for Friday dinner — it gets slammed."
           },
           {
-            "label": "False Idol",
-            "value": "Reserve. Saturday walk-ins are close to impossible."
+            "label": "Il Fornaio",
+            "value": "Thursday, 8:15 PM. The kitchen runs to 9:30."
           },
           {
-            "label": "Chicano Park Museum",
-            "value": "Thursday to Sunday, 11–5, $8. Saturday or not at all."
+            "label": "Officine Buona Forchetta",
+            "value": "Monday dinner at Liberty Station. Open to 9 on Mondays."
           },
           {
             "label": "Anything physical",
@@ -193,16 +215,16 @@
             "value": "Wayfarer, the Encinitas gardens and most Balboa Park museums are shut."
           },
           {
-            "label": "COASTER",
-            "value": "Pull the weekend timetable into PRONTO; check gonctd.com/alerts for closures."
-          },
-          {
             "label": "La Jolla",
             "value": "Art & Wine Festival closes Girard Ave Sat and Sun. Use Bird Rock and the Shores."
           },
           {
-            "label": "Balboa Park",
-            "value": "Parking is now paid. Lower Inspiration Point gives the first three hours free."
+            "label": "Rail alerts",
+            "value": "Only matters if you switch to the train, but NCTD suspends coastal rail on ad-hoc weekends."
+          },
+          {
+            "label": "Reconfirm",
+            "value": "Hours and closures verified October 2026. Check again in the week before you fly."
           }
         ]
       }
@@ -218,19 +240,23 @@
       },
       {
         "name": "Encinitas",
-        "sublabel": "Thu/Fri · Swami's bluff",
+        "sublabel": "Fri · Swami's bluff",
         "lat": 33.037,
         "lon": -117.292,
         "label_offset": {
-          "dx": -0.16,
-          "dy": 0.02
+          "dx": -0.17,
+          "dy": 0.035
         }
       },
       {
-        "name": "Del Mar",
+        "name": "Solana Beach",
         "sublabel": "Your base · 5 nights",
-        "lat": 32.9595,
-        "lon": -117.2653
+        "lat": 33.0014,
+        "lon": -117.2712,
+        "label_offset": {
+          "dx": 0.2,
+          "dy": -0.02
+        }
       },
       {
         "name": "La Jolla",
@@ -260,9 +286,9 @@
       }
     ],
     "legs": [
-      "≈ 20 min · 13 mi",
-      "≈ 12 min · 7 mi",
-      "≈ 20 min · 12 mi",
+      "≈ 14 min · 9 mi",
+      "≈ 10 min · 5 mi",
+      "≈ 24 min · 16 mi",
       "≈ 20 min · 13 mi",
       "≈ 15 min · 7 mi"
     ],
@@ -278,73 +304,73 @@
   "days": [
     {
       "label": "1",
-      "title": "The Floating Evening",
-      "subtitle": "Thursday or Friday · Encinitas & Del Mar",
+      "title": "Landing, and a Late Dinner",
+      "subtitle": "Wednesday & Thursday · Solana Beach",
       "timeline": [
         {
-          "time": "5:30 PM",
-          "title": "Swami's bluff, Encinitas",
-          "body": "The best golden-hour viewpoint in North County, twelve minutes from base, and the lot stays open until ten. Golden hour opens at 5:51 and the sun goes at 6:24. The meditation gardens next door close at five, so tonight is the bluff, not the gardens."
+          "time": "Wed PM",
+          "title": "UA1626 into Terminal 2",
+          "body": "Collect the car and head north — twenty-two miles, about twenty-six minutes to Seascape Sur. Worth reconfirming the arrival time against your booking: this flight number rotates between Newark, Charlotte and Orlando origins, and the published times differ by hours."
         },
         {
-          "time": "6:24 PM",
-          "title": "Sunset, then blue hour",
-          "body": "Twenty-five minutes of usable light after the sun drops. The 70-200 folds the bluffs into layers; the 16mm takes the whole sweep with foreground sandstone."
+          "time": "Thursday",
+          "title": "Working, then committed until eight",
+          "body": "Nothing is scheduled around you. If a gap opens in daylight, Fletcher Cove is a ten-minute walk north and has a paved ramp down to the sand with handrails — no stairs, unlike your own complex's access."
         },
         {
-          "time": "7:15 PM",
+          "time": "8:15 PM",
           "title": "Dinner in Del Mar",
-          "body": "Il Fornaio's patio faces the ocean with the fires lit, five minutes from where you are sleeping. The least demanding good dinner on this coast, and it runs to 9:30 nightly."
+          "body": "Il Fornaio, eight minutes south on Camino Del Mar. Ocean-view patio with the fires lit, and the kitchen runs to 9:30 — the only comfortable late table near your base on a Thursday."
         },
         {
-          "time": "If late",
-          "title": "An 8:15 table instead",
-          "body": "If the commitment takes five until eight, skip the bluff and go straight to dinner. Buona Forchetta in Encinitas and Pizza Port in Solana Beach both serve until ten on Fridays — and whichever evening this lands on, the other one is yours."
+          "time": "Or on foot",
+          "title": "Pizza Port, twenty minutes' walk",
+          "body": "If you get out nearer eight. Brewpub, communal tables, their own beer, and the garlic-veggie pie. It closes at nine on Thursdays, so this is the quick version, not the leisurely one."
         }
       ],
       "where_to_eat": [
         {
           "category": "Dinner",
           "place": "Il Fornaio, Del Mar",
-          "note": "1555 Camino Del Mar. Ocean-view patio, housemade pasta, wood-fired pizza, the vegan cavolfiori."
+          "note": "1555 Camino Del Mar. Housemade pasta, wood-fired pizza, the vegan cavolfiori. Kitchen to 9:30."
         },
         {
-          "category": "Dinner",
-          "place": "Siamese Basil, Encinitas",
-          "note": "Twenty years in, and the vegetarian dishes are what people return for. Tom kha, green curry."
-        },
-        {
-          "category": "Late",
+          "category": "Walk",
           "place": "Pizza Port, Solana Beach",
-          "note": "Brewpub, communal tables, their own beer. The garlic-veggie pie. To ten on Fridays."
+          "note": "135 N Hwy 101, about a mile. Closes 9 on Thursdays."
+        },
+        {
+          "category": "Drinks",
+          "place": "Culture Brewing, 111 S Cedros",
+          "note": "Sixteen minutes on foot, on the Cedros strip. To 10 on Thursdays."
         }
       ],
       "worth_knowing": [
         {
-          "place": "Swami's",
-          "blurb": "The surf break takes its name from the Self-Realization Fellowship on the bluff above it, founded by Paramahansa Yogananda in 1937. Its gold lotus towers are the landmark surfers line up against, and the collision of surf culture and spiritualism on this one headland is about as San Diego as the city gets."
+          "place": "Fletcher Cove",
+          "blurb": "Solana Beach's original beach access was blasted through the bluff by hand in the 1920s — locals called it the Tunnel, and it was the only way down to the sand for decades. The city has since replaced the scramble with a paved ramp and handrails, which is why it is the one stretch of this coastline you can reach without negotiating a staircase."
         }
       ]
     },
     {
       "label": "2",
       "title": "Highway 101, Northward",
-      "subtitle": "Friday · Del Mar → Solana Beach → Encinitas",
+      "subtitle": "Friday · Solana Beach → Encinitas → the airport",
       "timeline": [
         {
-          "time": "2:00 PM",
-          "title": "Torrey Pines Extension",
-          "body": "Optional and easy. A separate park unit from the closed main reserve, five minutes from base, free street parking on Del Mar Scenic Parkway. Take the Mar Scenic Trail and turn back whenever. If the back says no, Powerhouse Park in the village is flat, has benches and looks straight out to sea."
+          "time": "2:15 PM",
+          "title": "Coffee on Cedros, on foot",
+          "body": "Seven Seas Roasting at 312 S Cedros is a thirteen-minute walk from the door — single-origin pour-overs and a soft-serve affogato. The design district around it is flat and good for an hour. Leave the car where it is."
         },
         {
           "time": "3:30 PM",
-          "title": "Coffee on Cedros Avenue",
-          "body": "Seven Seas Roasting is the most serious roasting within ten minutes of you — single-origin pour-overs and a soft-serve affogato. The Cedros Design District around it is a pleasant half hour on flat pavement."
+          "title": "Torrey Pines Extension",
+          "body": "Optional and easy. A separate park unit from the closed main reserve, eight minutes south, free street parking on Del Mar Scenic Parkway. Take the Mar Scenic Trail and turn back whenever. If the back says no, Fletcher Cove and the ramp are two minutes from your door."
         },
         {
           "time": "4:45 PM",
           "title": "Prager Brothers, Encinitas",
-          "body": "Naturally leavened bread and a properly laminated croissant, right on Coast Highway 101. They close at five, so this is the hard edge of the afternoon."
+          "body": "Naturally leavened bread and a properly laminated croissant on Coast Highway 101. They close at five, so this is the hard edge of the afternoon."
         },
         {
           "time": "5:30 PM",
@@ -352,21 +378,26 @@
           "body": "Golden hour opens at 5:50, sunset is 6:23, and the light holds until about 6:48. The whole afternoon has been drifting north up the old coast road to arrive here."
         },
         {
-          "time": "7:00 PM",
+          "time": "7:15 PM",
           "title": "Dinner, five minutes away",
           "body": "Buona Forchetta's wood-fired Neapolitan on Coast Highway 101. Reserve on OpenTable — it gets slammed on a Friday and serves until ten."
+        },
+        {
+          "time": "Later",
+          "title": "The airport run",
+          "body": "Encinitas to SAN is about forty minutes against no traffic at that hour. A late arrival means you can take dinner at its own pace rather than watching the clock."
         }
       ],
       "where_to_eat": [
         {
           "category": "Coffee",
           "place": "Seven Seas Roasting, Solana Beach",
-          "note": "312 S Cedros Ave. Veteran-owned micro-roaster; the best cup between Del Mar and Encinitas."
+          "note": "312 S Cedros Ave. Veteran-owned micro-roaster, and a walk rather than a drive."
         },
         {
           "category": "Pastry",
           "place": "Prager Brothers, Encinitas",
-          "note": "543 S Coast Hwy 101. Naturally leavened, and the closest great bakery to your base. Closes at five."
+          "note": "543 S Coast Hwy 101. Naturally leavened. Closes at five."
         },
         {
           "category": "Dinner",
@@ -380,45 +411,40 @@
           "blurb": "Pinus torreyana is the rarest pine in North America, growing wild in only two places on earth: this stretch of coastal bluff and Santa Rosa Island offshore. The gnarled, wind-thrown shapes come from a tree trying to live in sandstone with almost no fresh water."
         },
         {
-          "place": "Historic Highway 101",
-          "blurb": "Before Interstate 5 opened this was the road, the coastal artery stringing the surf towns together from the border northward. The stretch you drive this afternoon still follows the original alignment, which is why the towns sit on it rather than off an exit ramp."
+          "place": "Swami's",
+          "blurb": "The surf break takes its name from the Self-Realization Fellowship on the bluff above it, founded by Paramahansa Yogananda in 1937. Its gold lotus towers are the landmark surfers line up against, and the collision of surf culture and spiritualism on one headland is about as San Diego as the city gets."
         }
       ]
     },
     {
       "label": "3",
-      "title": "The City, by Rail",
-      "subtitle": "Saturday · Little Italy & Barrio Logan · no car, no parking",
+      "title": "The City, and Back by Three",
+      "subtitle": "Saturday · Little Italy & Barrio Logan",
       "timeline": [
         {
           "time": "9:00 AM",
-          "title": "Solana Beach station",
-          "body": "Three minutes from base, and the 319-space transit lot is free. Buy the COASTER Regional Day Pass in the PRONTO app — about $15, and it covers the trolley as well. Tap at the platform validator before you board, not on the train."
+          "title": "South, before the traffic",
+          "body": "Twenty-eight minutes down the I-5 on a Saturday morning. Park at the 610 W Ash Street garage — five dollars all day at weekends, which is the single best parking fact in this document."
         },
         {
-          "time": "10:15 AM",
+          "time": "9:45 AM",
           "title": "Little Italy Mercato",
-          "body": "Six blocks of West Date Street, eight until two, the largest farmers market in the county. Breakfast here and eat properly. The Piazza della Famiglia and its three-tier fountain sit at the centre of it."
+          "body": "Six blocks of West Date Street, eight until two, the largest farmers market in the county. Breakfast here and eat properly. The Piazza della Famiglia and its three-tier fountain sit at the centre of it — a 16mm frame if ever there was one."
+        },
+        {
+          "time": "11:30 AM",
+          "title": "Chicano Park, Barrio Logan",
+          "body": "Ten minutes south. The murals climb the Coronado Bridge pylons on flat ground, in deep shade under the freeway — this is where a fast 28-70 earns its place. The 16mm from the base looking up; the 70-200 for individual panels."
         },
         {
           "time": "12:15 PM",
-          "title": "Blue Line south",
-          "body": "Every fifteen minutes, thirteen minutes to Barrio Logan. The station is at the park, so there is no walk at the far end."
+          "title": "Café Moto and the museum",
+          "body": "2619 National Avenue, a solar-powered roastery running continuously since 1990. It shuts at 2:30 on Saturdays. The Chicano Park Museum on National Ave runs 11 to 5 and is back on the table now you are driving."
         },
         {
-          "time": "12:30 PM",
-          "title": "Chicano Park",
-          "body": "The murals climb the Coronado Bridge pylons. Flat ground throughout, and deep shade under the freeway — this is where a fast 28-70 earns its place. The 16mm from the base looking up; the 70-200 for individual panels."
-        },
-        {
-          "time": "1:00 PM",
-          "title": "Café Moto, then the museum",
-          "body": "2619 National Avenue, a solar-powered roastery running continuously since 1990. It closes at 2:30 on Saturdays, so take it before the Chicano Park Museum on National Ave."
-        },
-        {
-          "time": "3:00 PM",
+          "time": "1:15 PM",
           "title": "North again",
-          "body": "Trolley to Santa Fe Depot, COASTER home. Back in Del Mar around 4:15, comfortably inside five — and you were able to drink at the market."
+          "body": "Home by two, with an hour in hand before three. Going by train would have worked too, but the northbound gap between 12:49 and 14:09 made it a gamble against your cut-off."
         }
       ],
       "where_to_eat": [
@@ -433,9 +459,9 @@
           "note": "2619 National Ave. Solar roastery, going since 1990. Closes 2:30 Saturday."
         },
         {
-          "category": "Dinner",
-          "place": "Kindred, South Park — if tonight frees up",
-          "note": "Death metal meets Victorian occult, entirely vegan, Restaurant of the Year. Then False Idol for tiki. Both need reserving."
+          "category": "Spare",
+          "place": "Ambrogio15, Pacific Beach",
+          "note": "Paper-thin Milanese pizza if the afternoon frees up on the way home. Open to 10."
         }
       ],
       "worth_knowing": [
@@ -453,7 +479,7 @@
         {
           "time": "9:00 AM",
           "title": "Wayfarer and Bird Rock",
-          "body": "5525 and 5627 La Jolla Boulevard, two doors apart. Wayfarer's founder was lead bread baker at Tartine in San Francisco; Bird Rock has been named Roaster of the Year. Go before 10:30 — the pastry sells out. Bird Rock sits south of the village, so the Art & Wine Festival never touches it."
+          "body": "5525 and 5627 La Jolla Boulevard, two doors apart, twenty-four minutes south. Wayfarer's founder was lead bread baker at Tartine in San Francisco; Bird Rock has been named Roaster of the Year. Go before 10:30 — the pastry sells out. Bird Rock sits south of the village, so the Art & Wine Festival never touches it."
         },
         {
           "time": "10:15 AM",
@@ -478,12 +504,12 @@
         {
           "time": "4:00 PM",
           "title": "North to Oceanside",
-          "body": "Forty-five minutes by car. Without one, the trolley to Santa Fe Depot and the COASTER north runs about ten dollars and you sit down for all of it."
+          "body": "Forty-five minutes up the coast, and conveniently away from the Sunday evening traffic building around Petco Park downtown."
         },
         {
           "time": "5:30 PM",
           "title": "Valle",
-          "body": "Mission Pacific Hotel, overlooking the pier. The Vegetariano tasting menu, and sunset at 6:21 arrives in the middle of dinner."
+          "body": "Mission Pacific Hotel, overlooking the pier. The Vegetariano tasting menu, and sunset at 6:21 arrives in the middle of dinner. Twenty-two minutes home afterwards."
         }
       ],
       "where_to_eat": [
@@ -513,42 +539,42 @@
     {
       "label": "5",
       "title": "Soft Landing",
-      "subtitle": "Monday · North County → Point Loma → SAN",
+      "subtitle": "Monday · checkout at ten, wheels up at 10:20",
       "timeline": [
         {
-          "time": "9:30 AM",
-          "title": "Ironsmith and Prager Brothers",
-          "body": "458 and 543 South Coast Highway 101, Encinitas. Small-batch award-winning roasting, and the croissant you would have had at Wayfarer if it opened on Mondays."
+          "time": "10:00 AM",
+          "title": "Check out, then coffee in Encinitas",
+          "body": "Bags go in the car — that is what makes today work. San Diego airport has no luggage storage and United will not take a checked bag until about 6:20 PM. Then Ironsmith and Prager Brothers, 458 and 543 South Coast Highway 101: small-batch roasting, and the croissant you would have had at Wayfarer if it opened on Mondays."
         },
         {
-          "time": "11:00 AM",
+          "time": "11:30 AM",
           "title": "San Elijo Lagoon",
-          "body": "2710 Manchester Avenue, Cardiff. Flat boardwalks, free parking, nature centre nine to five. The gentlest thing on this itinerary and none the worse for it — turn back whenever."
+          "body": "2710 Manchester Avenue, Cardiff, nine minutes away. Flat boardwalks, free parking, nature centre nine to five. The gentlest thing on this itinerary and none the worse for it."
         },
         {
-          "time": "12:30 PM",
+          "time": "1:00 PM",
           "title": "Lunch in Encinitas",
           "body": "Lotus Cafe is entirely vegetarian and open on Mondays, which narrows the field considerably on a day when half the county's best kitchens are dark."
         },
         {
-          "time": "3:15 PM",
-          "title": "Check out, then bags to the airport",
-          "body": "Collect everything from Del Mar and check it in on the way south. It costs twenty minutes and buys you an entire evening with nothing in your hands."
+          "time": "2:30 PM",
+          "title": "Mount Soledad",
+          "body": "Free, open to ten, and you drive to the top — no walking at all. A true 360 over the ocean, downtown, Coronado and, in October's Santa Ana clarity, well into Mexico. The best return on effort available today."
         },
         {
-          "time": "4:00 PM",
-          "title": "Liberty Public Market",
-          "body": "Free parking, flat, thirty-odd stalls in the old Naval Training Center. Eat early here so that nothing later is rushed."
+          "time": "3:45 PM",
+          "title": "Liberty Station",
+          "body": "The old Naval Training Center, flat throughout. Coffee, a slow wander, somewhere to sit before the light turns."
         },
         {
-          "time": "5:15 PM",
+          "time": "4:45 PM",
           "title": "Sunset Cliffs",
-          "body": "Arrive early — the lots fill three-quarters of an hour before sunset. Twenty yards from the car to the edge, and stay well back from it. Sunset at 6:20, light until 6:44. The 16mm for foreground rock, the 70-200 for the Coronado Islands in that Santa Ana clarity."
+          "body": "Arrive early — the lots fill three-quarters of an hour before sunset. Twenty yards from the car to the edge, and stay well back from it: a section near the Arch gave way in April. Sunset 6:20, light until 6:44."
         },
         {
-          "time": "7:10 PM",
-          "title": "San Diego International",
-          "body": "Fifteen minutes from the cliffs, bags long gone, a real dinner already eaten. Which is the entire point of a day built this way before a red-eye."
+          "time": "7:00 PM",
+          "title": "Dinner, then Terminal 2",
+          "body": "Officine Buona Forchetta at Liberty Station, ten minutes back, open to nine on Mondays. Away by 8:30 and at the airport by 8:45 — an hour and a half before UA1827, with a real meal behind you rather than a terminal sandwich."
         }
       ],
       "where_to_eat": [
@@ -564,8 +590,8 @@
         },
         {
           "category": "Dinner",
-          "place": "Liberty Public Market, Point Loma",
-          "note": "Early and flat, so the last evening is not a scramble. Officine Buona Forchetta is next door from five."
+          "place": "Officine Buona Forchetta, Liberty Station",
+          "note": "2865 Sims Rd. Wood-fired, open Mondays to nine, ten minutes from Terminal 2."
         }
       ],
       "worth_knowing": [
