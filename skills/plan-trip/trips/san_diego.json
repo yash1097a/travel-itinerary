@@ -56,12 +56,12 @@
         "label": "Rain, All\nof October"
       },
       {
-        "value": "$5",
-        "label": "Saturday\nParking"
+        "value": "6:50 AM",
+        "label": "Sunrise"
       },
       {
-        "value": "6:20 PM",
-        "label": "Monday\nSunset"
+        "value": "6:21 PM",
+        "label": "Sunset"
       }
     ],
     "activity_tags": [
