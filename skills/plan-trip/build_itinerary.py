@@ -427,15 +427,26 @@ def dining_calendar(itin):
     ]))
     return t, picked
 
-def suggestion_card(e):
-    """A compact shortlist card for the 'Also Suggested' grid."""
+def maps_url(e, region=''):
+    """The entry's own `map_url`, else a Google Maps search for name + area + region --
+    a search link, not a pin, so it never points at a guessed address."""
+    if e.get('map_url'):
+        return e['map_url']
+    from urllib.parse import quote_plus
+    q = ', '.join(x for x in (e.get('name'), e.get('area'), region) if x)
+    return 'https://www.google.com/maps/search/?api=1&query=' + quote_plus(q)
+
+def suggestion_card(e, region=''):
+    """A compact shortlist card for the 'Also Suggested' grid. No dishes here -- the
+    card's job is to say why and where; a Maps link does the 'where'."""
     st_n = ps('scn', fn='Helvetica-Bold', fs=7.8, ld=9.8, col=GREEN)
     st_m = ps('scm', fs=6.5, ld=8.4, col=MED)
     st_w = ps('scw', fs=6.9, ld=8.8, col=DARK)
     out = [Paragraph(e.get('name', ''), st_n)]
+    url = maps_url(e, region).replace('&', '&amp;')
+    link = '<link href="{}"><font color="#2A5C52"><b><u>Map</u></b></font></link>'.format(url)
     meta = ' · '.join(x for x in (e.get('area'), e.get('cuisine'), e.get('price')) if x)
-    if meta:
-        out.append(Paragraph(meta, st_m))
+    out.append(Paragraph(' · '.join(x for x in (meta, link) if x), st_m))
     bits = []
     if e.get('hours'):
         bits.append(e['hours'])
@@ -446,11 +457,9 @@ def suggestion_card(e):
         out.append(Paragraph('  ·  '.join(bits), st_m))
     if e.get('why'):
         out.append(Paragraph(e['why'], st_w))
-    if e.get('dishes'):
-        out.append(Paragraph('<i>{}</i>'.format(' · '.join(e['dishes'])), st_m))
     return out
 
-def suggestion_grid(groups, picked, cols=3):
+def suggestion_grid(groups, picked, cols=3, region=''):
     """Unpicked shortlist entries, budget group by budget group, three cards to a row.
     One table, so ReportLab can break it between rows rather than strand a group."""
     cw = CW / cols
@@ -466,7 +475,7 @@ def suggestion_grid(groups, picked, cols=3):
                  ('TOPPADDING', (0, r), (-1, r), 8 if r else 0), ('BOTTOMPADDING', (0, r), (-1, r), 3)]
         r += 1
         for k in range(0, len(rest), cols):
-            row = [suggestion_card(e) for e in rest[k:k + cols]]
+            row = [suggestion_card(e, region) for e in rest[k:k + cols]]
             row += [''] * (cols - len(row))
             data.append(row)
             cmds += [('BACKGROUND', (j, r), (j, r), SAGE) for j in range(len(rest[k:k + cols]))]
@@ -478,7 +487,7 @@ def suggestion_grid(groups, picked, cols=3):
     t.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
         ('LEFTPADDING', (0, 0), (-1, -1), 6), ('RIGHTPADDING', (0, 0), (-1, -1), 6),
-        ('TOPPADDING', (0, 0), (-1, -1), 5), ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
+        ('TOPPADDING', (0, 0), (-1, -1), 4), ('BOTTOMPADDING', (0, 0), (-1, -1), 5),
         ('LINEAFTER', (0, 0), (-2, -1), 3, white),
     ] + cmds))
     return t
@@ -502,7 +511,7 @@ def dining_story(itin, number):
         s += [Spacer(1, 8), Paragraph(tally, ps('dt', fn='Helvetica-Bold', fs=7.2, ld=10,
                                                 col=TEAL, al=TA_CENTER))]
     s.append(PageBreak())
-    grid = suggestion_grid(groups, picked)
+    grid = suggestion_grid(groups, picked, region=itin['region'].get('title', ''))
     if grid is not None:
         s += [Paragraph(spaced('ALSO SUGGESTED'), ST['sec_lbl']),
               Paragraph('Alternates and backups', ST['sec_hd']), Spacer(1, 2), grid,
@@ -526,8 +535,10 @@ def worth_knowing_section(items):
     ]))
     return KeepTogether([t])
 
-def info_table(rows, label_w=100, pad=4):
-    data=[[Paragraph(r['label'],ST['tdb']), Paragraph(r['value'],ST['td'])] for r in rows]
+def info_table(rows, label_w=100, pad=4, compact=False):
+    lb,vl=(ps('tbc',fn='Helvetica-Bold',fs=7.6,ld=9.8),ps('tdc',fs=7.6,ld=9.8)) if compact \
+          else (ST['tdb'],ST['td'])
+    data=[[Paragraph(r['label'],lb), Paragraph(r['value'],vl)] for r in rows]
     t=Table(data,colWidths=[label_w,CW-label_w])
     t.setStyle(TableStyle([
         ('BACKGROUND',(0,0),(0,-1),SAGE),('ROWBACKGROUNDS',(1,0),(1,-1),[white,CREAM]),
@@ -817,6 +828,19 @@ def build_story(itin, map_path):
             if sec['type']=='info': block.append(info_table(sec['rows'],label_w=100))
             elif sec['type']=='lodging': block.append(lodging_table(sec['rows']))
             s.append(KeepTogether(block)); s.append(Spacer(1,6))
+        s.append(PageBreak())
+
+    # PARKING — its own page, so a stop-by-stop guide never spills Planning onto a third page
+    parking=itin.get('parking')
+    if parking and parking.get('sections'):
+        s+=[SectionBadge(num(),'Parking'), Spacer(1,7),
+            Paragraph(parking.get('heading','Where to Park'), ST['sec_hd']), Spacer(1,2)]
+        if parking.get('note'):
+            s+=[Paragraph(parking['note'], ps('pkn', fs=8.4, ld=12, col=MED)), Spacer(1,4)]
+        for sec in parking['sections']:
+            block=[Paragraph(spaced(sec['label'].upper()), ST['sec_lbl']),
+                   info_table(sec['rows'],label_w=118,pad=2.5,compact=True)]
+            s.append(KeepTogether(block))
         s.append(PageBreak())
 
     # DINING — the shortlist every day pick was drawn from, between planning and the days
