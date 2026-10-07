@@ -94,8 +94,15 @@ rows** per page; beyond that, consolidate panels or accept a clean two-page Plan
   dinner/drinks/dessert → Dinner). The engine-derived cuisine tally sits centred beneath.
 - **Also Suggested** — every shortlist entry *not* picked, as a compact **three-column grid of
   sage cards**, grouped by budget under letter-spaced gold group labels with a gold rule.
-  Cards carry name, area · cuisine · price, hours with a gold *closed* chip, why, and dishes.
+  Cards carry name; area · cuisine · price · a teal underlined **Map** link (the entry's
+  `map_url`, else a Google Maps search for name + area + region title); hours with a gold
+  *closed* chip; and why. **No dishes on these cards** — dishes appear in the calendar.
   The page is omitted when every entry was picked.
+
+**Parking (own page, optional).** Section badge + serif heading ("Where to Park") + a short
+note, then one compact label/value table per day or day pair (stop / what to expect and how
+to plan), under letter-spaced gold labels. It sits after Planning so a stop-by-stop guide
+never pushes Planning onto a second page.
 
 **Day page.** Green **day-header band** with a gold left-accent bar, gold "DAY N", serif
 day title, and a gold subtitle note (top-right). Below it, the **vertical timeline spine**

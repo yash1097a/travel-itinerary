@@ -230,7 +230,7 @@ are the patterns to imitate. **Store clean, human-readable content**; the engine
 presentation (letter-spacing, uppercasing, the map, icons, the timeline spine, KeepTogether).
 Never put formatting hacks in the data.
 
-Top-level shape: `meta · region · cover · summary · planning? · map · days[] · packing?`
+Top-level shape: `meta · region · cover · summary · planning? · parking? · map · days[] · dining? · packing?`
 
 Key mappings from the conversation:
 - **meta / region / cover** — title, subtitle, date label, nights/days, waypoints, cover stats.
@@ -250,6 +250,9 @@ Key mappings from the conversation:
   `where_to_eat[]` (`category`, `place`, `note`) and `worth_knowing[]` (`place`, `blurb`).
   Category strings are free-form; icons are looked up automatically with a neutral fallback.
 - **packing** — items (`label` + `body`) and an optional footnote; make it trip-specific.
+- **parking** — optional page of its own: one panel per day or day pair, a row per stop
+  (`label` = the stop, `value` = what to expect and how to plan). Put parking here, not in
+  `planning`, so Planning stays one page. Keep each value to one or two lines; ~30 rows fit.
 
 - **dining** — the optional *Where to Eat* page: the whole trip's shortlist grouped by budget
   band, with `cuisine`, `hours`, a structured `closed` array, `why` and `dishes` per entry. The
@@ -266,7 +269,9 @@ Key mappings from the conversation:
   pick lands in the calendar with its details, give every `where_to_eat` row **one** place
   whose `place` starts with the shortlist `name` (an area suffix like `— Del Mar` is fine);
   two places in one row (`A & B`) show as written but only the first is resolved. A 6-day
-  calendar plus ~15 suggestions fits the two pages.
+  calendar fits one page; the Also Suggested grid holds ~25 cards on one page. Make the
+  shortlist generous (~20–25 alternates beyond the picks) so the backups are real choices.
+  Give `area` a street or neighbourhood plus the town, because it feeds the Maps link.
 - Keep lodging property **reasons ~6 words** and **notes ~1 sentence** so the row stays on one line.
 - **Planning capacity ≈ 4 panels + ~5 lodging rows per page.** Beyond that, consolidate panels or
   let Planning flow to a second page with each subsection kept whole — both are fine.
