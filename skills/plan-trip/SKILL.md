@@ -187,6 +187,11 @@ If you approve, I'll generate the PDF."* Wait for approval.
    on a near-empty page), tighten or consolidate the content (see *Planning capacity*).
 5. Deliver the PDF and offer edits.
 
+**After delivery, changes need explicit approval.** Once a PDF has been delivered, never edit
+the itinerary JSON or rebuild the PDF on your own initiative. Present the change as options
+with a recommendation, and rebuild only after the traveller explicitly approves that specific
+change. A question or a preference ("is there something more upscale?") is not approval.
+
 > Setup: `pip install -r requirements.txt` once (reportlab, geopandas, shapely, pyogrio,
 > matplotlib, numpy, pillow, svglib, jsonschema). Run the scripts from this skill folder
 > (`$CLAUDE_PLUGIN_ROOT/skills/plan-trip`). Fonts and icons are bundled; the map shapefiles
@@ -266,6 +271,8 @@ Key mappings from the conversation:
 ## Hard rules (do not violate)
 
 - **Stop at every approval gate.** Never skip a phase or generate without Gate 3 approval.
+- **No PDF changes without explicit approval.** After delivery, every change is proposed as
+  options first; edit the JSON and rebuild only once the traveller approves that change.
 - **Fresh research every trip.** No recycled content.
 - **Lodging = neighbourhood + 2–3 suggested properties + rationale.** Never one prescriptive
   hotel; never area-only; no prices.
