@@ -32,11 +32,42 @@ python3 "$CLAUDE_PLUGIN_ROOT/skills/travel-profile/profiles.py" get-active-profi
 *(If `$CLAUDE_PLUGIN_ROOT` isn't set, `profiles.py` is in the sibling `travel-profile` skill
 folder — locate and run it there.)*
 
-- If it prints a JSON profile, **apply its `fixed_preferences` throughout** (dining, pace,
-  stops, logistics), and **collect the `ask_per_trip` items in Phase 1** (use any
-  `lodging_style_framework` when asking about lodging style).
-- If it exits with `NO_ACTIVE_PROFILE` (or errors), the user has **no profile yet** — say so and
-  run the **`travel-profile` onboarding** to create one, then continue.
+If a private profile repo is configured, pull it first so you are not reading a stale copy:
+
+```bash
+python3 "$CLAUDE_PLUGIN_ROOT/skills/travel-profile/profile_sync.py" pull
+```
+
+It is safe to run always — with no repo configured, or with no network, it says so and changes
+nothing.
+
+- If it prints a **markdown profile** (YAML frontmatter plus prose sections), apply it throughout
+  — dining, pace, stops, logistics — and **collect the `## Ask per trip` items in Phase 1**, using
+  the lodging style framework recorded there when asking about lodging style.
+- Read the frontmatter carefully, not just the prose. Three fields change the plan directly:
+  - **`diet.strictness`** — the real rule, in the traveller's words. The label in
+    `diet.restriction` is a summary; `strictness` is what you must actually respect.
+  - **`budget.per_meal_cap`** (with `currency`) — a hard ceiling for a normal meal. Do not
+    recommend a headline dinner above it without flagging the cost explicitly and asking.
+  - **`mobility.status`** — and if it is `temporary`, check `review_after`. A date in the past
+    means the constraint has expired: ask whether it still applies rather than silently
+    applying it to this trip.
+- Read **`## Trip log`** before suggesting destinations, so you don't pitch somewhere already done.
+- A legacy JSON profile is converted to this shape automatically on read, so it still works.
+If it fails, **read which of the two failures it is** — they need different responses, and
+treating them the same is how a previous profile gets silently overwritten:
+
+- **`NO_ACTIVE_PROFILE`** — the store is there and empty, so the user genuinely has no profile.
+  Say so and run the **`travel-profile` onboarding** to create one, then continue.
+- **`PROFILE_STORE_MISSING`** — no store exists at all. On a fresh cloud container this usually
+  means a profile from an earlier session **was lost with the container**, not that the user is
+  new. Do **not** silently re-interview. Show the paths the command listed, say plainly that any
+  earlier profile is gone, and offer the choice: paste a saved profile back in
+  (`profiles.py import <name>`), or onboard from scratch. If they onboard, mention they can keep
+  a copy with `profiles.py export` so the next container is one paste away.
+
+Either way the command prints **every path it checked** — pass that along rather than
+paraphrasing it, so the user can see where their profile was expected to be.
 
 Also read **`settings.research_depth`** (`"light"` or `"heavy"`; default **light** if absent) —
 it governs how much research you do. See **Research depth** below.

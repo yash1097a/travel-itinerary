@@ -1,0 +1,79 @@
+#!/bin/sh
+#
+# travel-itinerary pre-commit guard: refuse to commit a traveller profile.
+#
+# This repo is public and is distributed through a plugin marketplace. A committed
+# profile publishes dietary restrictions, home airports, health constraints and
+# travel history. A .gitignore entry alone is defeated by `git add -f`, so this
+# hook is the real guard.
+#
+# Git does not distribute hooks on clone. Install it with:
+#
+#     git config core.hooksPath hooks
+#
+# Detection is deliberately narrow, so it never fires on documentation that shows
+# the profile format inside a fenced code block:
+#
+#   markdown -- line 1 is exactly "---" and the frontmatter block that follows
+#               contains both `schema_version:` and `diet:`
+#   json     -- a legacy profile: both "fixed_preferences" and "dietary_restrictions"
+#
+set -e
+
+offenders=""
+old_ifs=$IFS
+IFS='
+'
+for f in $(git diff --cached --name-only --diff-filter=ACM); do
+    IFS=$old_ifs
+
+    # Markdown profile: frontmatter signature at the very start of the file.
+    # `exit` inside awk still runs END, so the verdict is carried in `notprofile`
+    # rather than in an exit status that END would overwrite.
+    if git show ":$f" 2>/dev/null | awk '
+        BEGIN { notprofile = 1 }
+        { sub(/$/, "") }
+        NR == 1 { if ($0 == "---") { fm = 1; next } else { exit } }
+        fm && $0 == "---" { if (ver && diet) notprofile = 0; exit }
+        fm && /^schema_version:/ { ver = 1 }
+        fm && /^diet:/           { diet = 1 }
+        END { exit notprofile }
+    '; then
+        offenders="$offenders  $f  (markdown profile frontmatter)
+"
+    # Legacy JSON profile. The document must actually BE json -- first non-blank
+    # character is '{' -- so source code that merely names these keys (the migration
+    # code does) is not mistaken for a profile.
+    elif git show ":$f" 2>/dev/null | awk '
+        BEGIN { notprofile = 1 }
+        /^[ \t]*$/ { next }
+        !started { started = 1; if ($0 !~ /^[ \t]*\{/) exit }
+        /"fixed_preferences"/    { fp = 1 }
+        /"dietary_restrictions"/ { dr = 1 }
+        END { if (fp && dr) notprofile = 0; exit notprofile }
+    '; then
+        offenders="$offenders  $f  (legacy JSON profile)
+"
+    fi
+
+    IFS='
+'
+done
+IFS=$old_ifs
+
+if [ -n "$offenders" ]; then
+    printf '%s\n' "BLOCKED: these staged files look like traveller profiles:" >&2
+    printf '%s' "$offenders" >&2
+    cat >&2 <<'MSG'
+Profiles are personal data and must never be committed to this public repo.
+They belong in your per-user data directory -- run:
+
+    python3 skills/travel-profile/profiles.py dir
+
+Unstage with:  git restore --staged <file>
+
+If this is a false positive (documentation, a test fixture), commit with
+--no-verify and say so in the commit message.
+MSG
+    exit 1
+fi

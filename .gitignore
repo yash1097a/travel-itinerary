@@ -7,8 +7,12 @@ __pycache__/
 .DS_Store
 
 # never commit personal data or downloaded map data — these live in the per-user
-# data dir ($CLAUDE_PLUGIN_DATA), not in the repo
+# data dir ($CLAUDE_PLUGIN_DATA), not in the repo.
+# NOTE: .gitignore is defeated by `git add -f`. The real guard is hooks/pre-commit —
+# install it with `git config core.hooksPath hooks`.
 profiles/
+*.profile.md
+.travel-data/
 traveler_profile.json
 data/natural_earth/
 natural_earth/
