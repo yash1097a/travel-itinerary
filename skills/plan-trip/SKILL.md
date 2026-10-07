@@ -261,9 +261,12 @@ Key mappings from the conversation:
   without them that check silently cannot run.
 
 **Content sizing (learned the hard way):**
-- **Dining page ≈ 9–10 entries per page** at 4–6 lines each (measured: ~60–80pt per entry against
-  a 712pt frame). Eleven entries across three budget groups came to two pages with room left.
-  Each entry is kept whole; a group is *not*, so a long group flows across the break naturally.
+- **Dining is two pages:** a *Your Picks* calendar built from `days[].where_to_eat`, then an
+  *Also Suggested* grid of every unpicked shortlist entry, three cards to a row. So that each
+  pick lands in the calendar with its details, give every `where_to_eat` row **one** place
+  whose `place` starts with the shortlist `name` (an area suffix like `— Del Mar` is fine);
+  two places in one row (`A & B`) show as written but only the first is resolved. A 6-day
+  calendar plus ~15 suggestions fits the two pages.
 - Keep lodging property **reasons ~6 words** and **notes ~1 sentence** so the row stays on one line.
 - **Planning capacity ≈ 4 panels + ~5 lodging rows per page.** Beyond that, consolidate panels or
   let Planning flow to a second page with each subsection kept whole — both are fine.

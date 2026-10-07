@@ -329,51 +329,163 @@ def cuisine_tally(dining):
     ordered = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
     return '  ·  '.join('{} {}'.format(k, v) for k, v in ordered)
 
-def dining_entry(e):
-    """One restaurant card, as a single Table.
+# Meal slot for a day's `where_to_eat` category, so free-form categories still land in
+# the right calendar column. Anything unmapped (a market stall, 'Snack') goes to the
+# slot named by its own category if one exists, else to the morning column.
+MEAL_SLOTS = ("Morning", "Lunch", "Dinner")
+SLOT_OF = {"coffee": "Morning", "breakfast": "Morning", "bakery": "Morning",
+           "pastry": "Morning", "brunch": "Lunch", "lunch": "Lunch",
+           "dinner": "Dinner", "drinks": "Dinner", "dessert": "Dinner"}
+RESERVE_WORDS = ("opentable", "resy", "reserve", "book", "phone", "tock")
 
-    Returns a bare flowable, NOT a KeepTogether: the caller wraps it, because nesting a
-    KeepTogether inside another one makes ReportLab wrap the inner one without a canvas
-    and the group gets pushed onto a page of its own."""
-    name = e.get('name', '')
+def _pick_index(itin):
+    """(index, match) from the validator, so a day's pick resolves to a shortlist entry
+    by exactly the rule the cross-checks use. Falls back to exact names if the validator
+    cannot be imported (jsonschema missing)."""
+    try:
+        sys.path.insert(0, os.path.join(HERE, 'schema'))
+        from validate import _dining_index, _match
+        return _dining_index(itin), _match
+    except Exception:
+        norm = lambda x: " ".join((x or "").split()).casefold()
+        idx = {norm(e.get('name')): e for g in (itin.get('dining') or {}).get('groups', [])
+               for e in g.get('entries', [])}
+        return idx, lambda place, i: (i.get(norm(place)), 'exact') if norm(place) in i else (None, None)
+
+def _day_label(day, i):
+    import datetime
+    d = day.get('date')
+    if d:
+        try:
+            dt = datetime.date.fromisoformat(d)
+            return dt.strftime('%a').upper(), '{} {}'.format(dt.strftime('%b'), dt.day)
+        except Exception:
+            pass
+    if day.get('weekday'):
+        return day['weekday'][:3].upper(), 'Day {}'.format(i)
+    return 'DAY {}'.format(i), ''
+
+def _needs_booking(e):
+    b = (e or {}).get('booking') or ''
+    return any(w in b.lower() for w in RESERVE_WORDS)
+
+def pick_cell(place, e, exact=True):
+    """One calendar cell entry: name, cuisine and price, one dish, and a booking flag only
+    when the place actually takes reservations -- the one action the reader must take."""
+    st_name = ps('pcn', fn='Helvetica-Bold', fs=7.6, ld=9.6, col=GREEN)
+    st_meta = ps('pcm', fs=6.6, ld=8.6, col=MED)
+    # The shortlist name is the clean one, so use it when the day's wording is just that
+    # name plus an area ('Lofty Coffee — Solana Beach'). Any other loose match ('Bump
+    # Coffee & Prager Brothers') keeps the day's own wording, so the second place in the
+    # pick is not silently dropped from the calendar.
+    name = place
+    if e:
+        en = e.get('name') or ''
+        rest = place[len(en):].strip() if place.casefold().startswith(en.casefold()) else None
+        if exact or (rest is not None and (not rest or rest[0] in '—–-,(')):
+            name = en
+    out = [Paragraph(name, st_name)]
+    if e:
+        meta = ' · '.join(x for x in (e.get('cuisine'), e.get('price')) if x)
+        if meta:
+            out.append(Paragraph(meta, st_meta))
+        if e.get('dishes'):
+            out.append(Paragraph('<i>{}</i>'.format(e['dishes'][0]), st_meta))
+        if _needs_booking(e):
+            out.append(Paragraph('<font color="#C4973A"><b>{}</b></font>'.format(e['booking']),
+                                 st_meta))
+    return out
+
+def dining_calendar(itin):
+    """Days down the side, meal slots across: what the itinerary actually picked."""
+    idx, match = _pick_index(itin)
+    hdr = [Paragraph(spaced(t.upper()), ST['eat_hd']) for t in ('Day',) + MEAL_SLOTS]
+    data = [hdr]; picked = set()
+    for i, day in enumerate(itin['days'], start=1):
+        wd, dt = _day_label(day, i)
+        cells = {k: [] for k in MEAL_SLOTS}
+        for r in day.get('where_to_eat') or []:
+            slot = SLOT_OF.get(r['category'].strip().lower(), 'Morning')
+            e, how = match(r['place'], idx)
+            if e is not None:
+                picked.add(id(e))
+            if cells[slot]:
+                cells[slot].append(Spacer(1, 4))
+            cells[slot] += pick_cell(r['place'], e, exact=(how == 'exact'))
+        label = [Paragraph(wd, ps('cdw', fn='Helvetica-Bold', fs=8, ld=10, col=GOLD)),
+                 Paragraph(dt, ps('cdd', fs=6.8, ld=9, col=MED))]
+        data.append([label] + [cells[k] or Paragraph('—', ps('cde', fs=7, col=PALE))
+                               for k in MEAL_SLOTS])
+    dw = 0.62 * inch; sw = (CW - dw) / 3
+    t = Table(data, colWidths=[dw, sw, sw, sw], repeatRows=1)
+    t.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), GREEN), ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -1), [white, SAGE]),
+        ('LEFTPADDING', (0, 0), (-1, -1), 6), ('RIGHTPADDING', (0, 0), (-1, -1), 6),
+        ('TOPPADDING', (0, 0), (-1, -1), 5), ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
+        ('INNERGRID', (0, 1), (-1, -1), 0.4, RULE), ('BOX', (0, 0), (-1, -1), 0.5, RULE),
+    ]))
+    return t, picked
+
+def suggestion_card(e):
+    """A compact shortlist card for the 'Also Suggested' grid."""
+    st_n = ps('scn', fn='Helvetica-Bold', fs=7.8, ld=9.8, col=GREEN)
+    st_m = ps('scm', fs=6.5, ld=8.4, col=MED)
+    st_w = ps('scw', fs=6.9, ld=8.8, col=DARK)
+    out = [Paragraph(e.get('name', ''), st_n)]
     meta = ' · '.join(x for x in (e.get('area'), e.get('cuisine'), e.get('price')) if x)
-    rows = [[IconFlow(cuisine_icon(e.get('cuisine')), TEAL, 11),
-             Paragraph('<b>{}</b>'.format(name), ST['eat_val'])]]
-    body = []
     if meta:
-        body.append(Paragraph(meta, ST['eat_note']))
-    hours_bits = []
+        out.append(Paragraph(meta, st_m))
+    bits = []
     if e.get('hours'):
-        hours_bits.append(e['hours'])
+        bits.append(e['hours'])
     if e.get('closed'):
-        # the chip the reader actually needs: which nights not to plan on
-        hours_bits.append('<font color="#C4973A"><b>closed {}</b></font>'.format(
+        bits.append('<font color="#C4973A"><b>closed {}</b></font>'.format(
             ', '.join(d[:3] for d in e['closed'])))
-    if e.get('booking'):
-        hours_bits.append(e['booking'])
-    if hours_bits:
-        body.append(Paragraph('  ·  '.join(hours_bits), ST['eat_note']))
+    if bits:
+        out.append(Paragraph('  ·  '.join(bits), st_m))
     if e.get('why'):
-        body.append(Paragraph(e['why'], ST['eat_val']))
+        out.append(Paragraph(e['why'], st_w))
     if e.get('dishes'):
-        body.append(Paragraph('<i>{}</i>'.format(' · '.join(e['dishes'])),
-                              ST['eat_note']))
-    if e.get('tags'):
-        body.append(Paragraph(spaced(' / '.join(t.upper() for t in e['tags'])),
-                              ps('dtg', fn='Helvetica-Bold', fs=6, ld=9, col=PALE)))
-    rows.append(['', body])
-    t = Table(rows, colWidths=[16, CW - 16])
+        out.append(Paragraph('<i>{}</i>'.format(' · '.join(e['dishes'])), st_m))
+    return out
+
+def suggestion_grid(groups, picked, cols=3):
+    """Unpicked shortlist entries, budget group by budget group, three cards to a row.
+    One table, so ReportLab can break it between rows rather than strand a group."""
+    cw = CW / cols
+    data, cmds, r = [], [], 0
+    for g in groups:
+        rest = [e for e in g.get('entries') or [] if id(e) not in picked]
+        if not rest:
+            continue
+        data.append([Paragraph(spaced(g['label'].upper()),
+                               ps('sgl', fn='Helvetica-Bold', fs=6.8, ld=9, col=GOLD))]
+                    + [''] * (cols - 1))
+        cmds += [('SPAN', (0, r), (-1, r)), ('LINEBELOW', (0, r), (-1, r), 1.2, GOLD),
+                 ('TOPPADDING', (0, r), (-1, r), 8 if r else 0), ('BOTTOMPADDING', (0, r), (-1, r), 3)]
+        r += 1
+        for k in range(0, len(rest), cols):
+            row = [suggestion_card(e) for e in rest[k:k + cols]]
+            row += [''] * (cols - len(row))
+            data.append(row)
+            cmds += [('BACKGROUND', (j, r), (j, r), SAGE) for j in range(len(rest[k:k + cols]))]
+            cmds += [('LINEBELOW', (0, r), (-1, r), 3, white)]
+            r += 1
+    if not data:
+        return None
+    t = Table(data, colWidths=[cw] * cols)
     t.setStyle(TableStyle([
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-        ('LEFTPADDING', (0, 0), (-1, -1), 0), ('RIGHTPADDING', (0, 0), (-1, -1), 0),
-        ('TOPPADDING', (0, 0), (0, 0), 1), ('BOTTOMPADDING', (0, 0), (-1, 0), 2),
-        ('TOPPADDING', (0, 1), (-1, 1), 0), ('BOTTOMPADDING', (0, 1), (-1, 1), 0),
-    ]))
+        ('LEFTPADDING', (0, 0), (-1, -1), 6), ('RIGHTPADDING', (0, 0), (-1, -1), 6),
+        ('TOPPADDING', (0, 0), (-1, -1), 5), ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
+        ('LINEAFTER', (0, 0), (-2, -1), 3, white),
+    ] + cmds))
     return t
 
 def dining_story(itin, number):
-    """The 'Where to Eat' reference page. Grouped by budget, each group kept whole, and
-    free to flow onto a second page -- the same rule the planning page follows."""
+    """'Where to Eat' as two pages: a calendar of what the days picked, then every other
+    shortlist entry packed into a compact grid, grouped by budget."""
     dining = itin.get('dining') or {}
     groups = dining.get('groups') or []
     if not groups:
@@ -381,28 +493,20 @@ def dining_story(itin, number):
     s = [SectionBadge(number, 'Dining'), Spacer(1, 7),
          Paragraph(dining.get('heading', 'Where to Eat'), ST['sec_hd']), Spacer(1, 2)]
     if dining.get('note'):
-        s += [Paragraph(dining['note'], ps('dn', fs=8.7, ld=12.5, col=MED)), Spacer(1, 6)]
+        s += [Paragraph(dining['note'], ps('dn', fs=8.4, ld=12, col=MED)), Spacer(1, 6)]
+    cal, picked = dining_calendar(itin)
+    s += [icon_label_cell('tools-kitchen-2', 'YOUR PICKS', GOLD, size=11, fs=7),
+          GoldLine(width=0.5 * inch, thickness=1.5), Spacer(1, 4), cal]
     tally = cuisine_tally(dining)
     if tally:
-        s += [Paragraph(tally, ps('dt', fn='Helvetica-Bold', fs=7.5, ld=11,
-                                  col=TEAL, al=TA_CENTER)), Spacer(1, 10)]
-    for g in groups:
-        entries = g.get('entries') or []
-        label = [icon_label_cell('tools-kitchen-2', g['label'].upper(), GOLD, size=11, fs=7),
-                 GoldLine(width=0.5 * inch, thickness=1.5), Spacer(1, 5)]
-        # The label is kept with its FIRST entry only, never with the whole group: a
-        # group of five entries rarely fits in what is left of a page, and keeping it
-        # whole pushes every group onto a page of its own -- four pages for eleven
-        # restaurants, with a near-empty one at the front. Each entry is already
-        # individually atomic, which is the guarantee that actually matters.
-        if entries:
-            s.append(KeepTogether(label + [dining_entry(entries[0]), Spacer(1, 7)]))
-            for e in entries[1:]:
-                s.append(KeepTogether([dining_entry(e), Spacer(1, 7)]))
-        else:
-            s.append(KeepTogether(label))
-        s.append(Spacer(1, 4))
+        s += [Spacer(1, 8), Paragraph(tally, ps('dt', fn='Helvetica-Bold', fs=7.2, ld=10,
+                                                col=TEAL, al=TA_CENTER))]
     s.append(PageBreak())
+    grid = suggestion_grid(groups, picked)
+    if grid is not None:
+        s += [Paragraph(spaced('ALSO SUGGESTED'), ST['sec_lbl']),
+              Paragraph('Alternates and backups', ST['sec_hd']), Spacer(1, 2), grid,
+              PageBreak()]
     return s
 
 def worth_knowing_section(items):
