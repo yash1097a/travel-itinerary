@@ -43,9 +43,54 @@ If you run the planner before creating a profile, it will offer to onboard you f
 
 ## Where your data lives
 
-- **Profiles** and the **downloaded map data** live in your per-user Claude data directory
-  (`~/.claude/plugins/data/travel-itinerary/`). They **survive plugin updates** and are never in
-  this repo.
+A profile is **one markdown file** — YAML frontmatter for the parts that get machine-checked
+(diet, budget cap, mobility), prose for everything the planner reads. It is hand-editable,
+diffable, and pasteable into any chat.
+
+Profiles are looked up in this order, and the **first location that actually holds one wins**.
+Every command tells you which one it used (`profiles.py where`):
+
+| | Location | Notes |
+|---|---|---|
+| 1 | `$TRAVEL_PROFILE_PATH` | explicit override; a file or a directory |
+| 2 | a private profile repo | see below — the answer for cloud sessions |
+| 3 | `~/.claude/travel/profiles/` | local; point it at Dropbox/iCloud/OneDrive for free sync |
+| 4 | `~/.claude/plugins/data/travel-itinerary/profiles/` | legacy JSON, **read-only**, converted on read |
+
+Run `profiles.py migrate` to turn a legacy JSON profile into markdown. The JSON is left in place,
+so it is safe to run.
+
+### Cloud sessions: use a private repo
+
+A cloud session (e.g. claude.ai/code) gets a **fresh, ephemeral container**. The data directory
+does not survive it, so a profile saved in one session is gone in the next. A **private** git repo
+is the only mechanism that needs no per-session step:
+
+```
+python3 "$CLAUDE_PLUGIN_ROOT/skills/travel-profile/profile_sync.py" setup <private-repo-url>
+```
+
+Then set `TRAVEL_PROFILE_REPO=<private-repo-url>` in your cloud environment, because the local
+config file is ephemeral too. Each session runs `profile_sync.py pull` (the planner does this for
+you) and `profile_sync.py push` after a change.
+
+The clone is shallow, blobless and sparse to `profiles/`, so pointing it at a repo that also holds
+large files costs almost nothing.
+
+> **The repo must be private.** `setup` checks with the `gh` CLI and **refuses a public repo**,
+> because a profile holds dietary restrictions, home airports, health constraints and travel
+> history. If it cannot check, it says so.
+
+- The **downloaded map data** lives in your per-user Claude data directory
+  (`~/.claude/plugins/data/travel-itinerary/`) and survives plugin updates.
+- **Never commit a profile to this repository.** It is public and distributed through a plugin
+  marketplace, so a committed profile publishes dietary restrictions, home airports, health
+  constraints and travel history. If you are working on the plugin itself, install the guard
+  once — `git config core.hooksPath hooks` — and `hooks/pre-commit` will refuse any commit
+  that stages a profile, including one forced in with `git add -f`.
+- **On an ephemeral cloud container** (e.g. claude.ai/code) the data directory does **not**
+  survive the session. Move a profile between machines with
+  `profiles.py export` / `profiles.py import`.
 - The plugin ships **lean**: on the first trip it downloads ~70 MB of public-domain
   [Natural Earth](https://www.naturalearthdata.com/) map data once; every build after that is
   fully offline.

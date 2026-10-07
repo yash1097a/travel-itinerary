@@ -148,6 +148,15 @@ ACTIVITY_ICONS = {"coastal hiking":"walk","hiking":"walk","day hikes":"walk","ra
 PLANNING_ICONS = {"flights":"plane","getting around":"car","where to stay":"bed",
                   "advance bookings":"list-check","before you go":"list-check",
                   "park access & safety":"list-check"}
+# Cuisine -> icon. A dict, NOT a filesystem lookup: icon_drawing() raises on a missing
+# file, and there is no per-cuisine art bundled. Anything unmapped gets the neutral fork
+# and knife, which is the honest answer for 'Mexican' or 'Thai'.
+CUISINE_ICONS = {"coffee":"coffee","cafe":"coffee","café":"coffee","bakery":"coffee",
+                 "pastry":"coffee","tea":"coffee","bar":"glass-full","wine":"glass-full",
+                 "brewery":"glass-full","cocktails":"glass-full","drinks":"glass-full",
+                 "dessert":"glass-full","ice cream":"glass-full"}
+def cuisine_icon(cuisine): return CUISINE_ICONS.get((cuisine or "").strip().lower(),
+                                                    "tools-kitchen-2")
 def dining_icon(cat): return DINING_ICONS.get(cat.strip().lower(), "tools-kitchen-2")
 def activity_icon(tag): return ACTIVITY_ICONS.get(tag.strip().lower(), "mountain")
 def planning_icon(label): return PLANNING_ICONS.get(label.strip().lower())
@@ -302,6 +311,99 @@ def eat_section(rows):
         ('LINEAFTER',(0,1),(0,-1),0.5,RULE),('BOX',(0,0),(-1,-1),0.5,RULE),
     ]))
     return KeepTogether([t])
+
+def cuisine_tally(dining):
+    """'Mexican 4 · Thai 1 · Coffee 3' across every entry, most frequent first.
+
+    Derived by the engine, never stored: this is the line that makes an imbalance
+    visible, and an imbalance is exactly what a hand-written tally would hide."""
+    counts = {}
+    for g in dining.get('groups', []):
+        for e in g.get('entries', []):
+            c = (e.get('cuisine') or '').strip()
+            if c:
+                key = c[:1].upper() + c[1:]
+                counts[key] = counts.get(key, 0) + 1
+    if not counts:
+        return ''
+    ordered = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+    return '  ·  '.join('{} {}'.format(k, v) for k, v in ordered)
+
+def dining_entry(e):
+    """One restaurant card, as a single Table.
+
+    Returns a bare flowable, NOT a KeepTogether: the caller wraps it, because nesting a
+    KeepTogether inside another one makes ReportLab wrap the inner one without a canvas
+    and the group gets pushed onto a page of its own."""
+    name = e.get('name', '')
+    meta = ' · '.join(x for x in (e.get('area'), e.get('cuisine'), e.get('price')) if x)
+    rows = [[IconFlow(cuisine_icon(e.get('cuisine')), TEAL, 11),
+             Paragraph('<b>{}</b>'.format(name), ST['eat_val'])]]
+    body = []
+    if meta:
+        body.append(Paragraph(meta, ST['eat_note']))
+    hours_bits = []
+    if e.get('hours'):
+        hours_bits.append(e['hours'])
+    if e.get('closed'):
+        # the chip the reader actually needs: which nights not to plan on
+        hours_bits.append('<font color="#C4973A"><b>closed {}</b></font>'.format(
+            ', '.join(d[:3] for d in e['closed'])))
+    if e.get('booking'):
+        hours_bits.append(e['booking'])
+    if hours_bits:
+        body.append(Paragraph('  ·  '.join(hours_bits), ST['eat_note']))
+    if e.get('why'):
+        body.append(Paragraph(e['why'], ST['eat_val']))
+    if e.get('dishes'):
+        body.append(Paragraph('<i>{}</i>'.format(' · '.join(e['dishes'])),
+                              ST['eat_note']))
+    if e.get('tags'):
+        body.append(Paragraph(spaced(' / '.join(t.upper() for t in e['tags'])),
+                              ps('dtg', fn='Helvetica-Bold', fs=6, ld=9, col=PALE)))
+    rows.append(['', body])
+    t = Table(rows, colWidths=[16, CW - 16])
+    t.setStyle(TableStyle([
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 0), ('RIGHTPADDING', (0, 0), (-1, -1), 0),
+        ('TOPPADDING', (0, 0), (0, 0), 1), ('BOTTOMPADDING', (0, 0), (-1, 0), 2),
+        ('TOPPADDING', (0, 1), (-1, 1), 0), ('BOTTOMPADDING', (0, 1), (-1, 1), 0),
+    ]))
+    return t
+
+def dining_story(itin, number):
+    """The 'Where to Eat' reference page. Grouped by budget, each group kept whole, and
+    free to flow onto a second page -- the same rule the planning page follows."""
+    dining = itin.get('dining') or {}
+    groups = dining.get('groups') or []
+    if not groups:
+        return []
+    s = [SectionBadge(number, 'Dining'), Spacer(1, 7),
+         Paragraph(dining.get('heading', 'Where to Eat'), ST['sec_hd']), Spacer(1, 2)]
+    if dining.get('note'):
+        s += [Paragraph(dining['note'], ps('dn', fs=8.7, ld=12.5, col=MED)), Spacer(1, 6)]
+    tally = cuisine_tally(dining)
+    if tally:
+        s += [Paragraph(tally, ps('dt', fn='Helvetica-Bold', fs=7.5, ld=11,
+                                  col=TEAL, al=TA_CENTER)), Spacer(1, 10)]
+    for g in groups:
+        entries = g.get('entries') or []
+        label = [icon_label_cell('tools-kitchen-2', g['label'].upper(), GOLD, size=11, fs=7),
+                 GoldLine(width=0.5 * inch, thickness=1.5), Spacer(1, 5)]
+        # The label is kept with its FIRST entry only, never with the whole group: a
+        # group of five entries rarely fits in what is left of a page, and keeping it
+        # whole pushes every group onto a page of its own -- four pages for eleven
+        # restaurants, with a near-empty one at the front. Each entry is already
+        # individually atomic, which is the guarantee that actually matters.
+        if entries:
+            s.append(KeepTogether(label + [dining_entry(entries[0]), Spacer(1, 7)]))
+            for e in entries[1:]:
+                s.append(KeepTogether([dining_entry(e), Spacer(1, 7)]))
+        else:
+            s.append(KeepTogether(label))
+        s.append(Spacer(1, 4))
+    s.append(PageBreak())
+    return s
 
 def worth_knowing_section(items):
     hdr=[icon_label_cell("building-monument","WORTH KNOWING",white), Paragraph('',ST['eat_hd'])]
@@ -559,8 +661,14 @@ def make_body_page(itin):
 def build_story(itin, map_path):
     s=[NextPageTemplate('body'), PageBreak()]
     summ=itin['summary']
+    # Section numbers run in sequence over the sections actually present. Hardcoding them
+    # leaves a gap ('01' then '03') on any trip that omits an optional page.
+    _n=[0]
+    def num():
+        _n[0]+=1
+        return '{:02d}'.format(_n[0])
     # SUMMARY
-    s+=[SectionBadge('01','Summary'), Spacer(1,7),
+    s+=[SectionBadge(num(),'Summary'), Spacer(1,7),
         Paragraph(summ.get('route_heading','Your Route'), ST['sec_hd']), Spacer(1,5),
         Paragraph(summ['intro'], ps('intro', fs=9.3, ld=15.5, al=TA_JUSTIFY)), Spacer(1,16)]
     map_w,map_h=render_route_map(itin, map_path)
@@ -596,7 +704,7 @@ def build_story(itin, map_path):
     # PLANNING
     planning=itin.get('planning')
     if planning and planning.get('sections'):
-        s+=[SectionBadge('02','Planning'), Spacer(1,6)]
+        s+=[SectionBadge(num(),'Planning'), Spacer(1,6)]
         for sec in planning['sections']:
             ic=planning_icon(sec['label'])
             label=icon_label_cell(ic, sec['label'].upper(), GOLD, size=11, fs=7) if ic \
@@ -606,6 +714,9 @@ def build_story(itin, map_path):
             elif sec['type']=='lodging': block.append(lodging_table(sec['rows']))
             s.append(KeepTogether(block)); s.append(Spacer(1,6))
         s.append(PageBreak())
+
+    # DINING — the shortlist every day pick was drawn from, between planning and the days
+    s+=dining_story(itin, num() if (itin.get('dining') or {}).get('groups') else '')
 
     # DAY PAGES
     for i,day in enumerate(itin['days'],start=1):
@@ -656,6 +767,20 @@ def validate_instance(itin):
     if errs:
         msgs="\n".join(f"  - at {'/'.join(str(p) for p in e.path) or '(root)'}: {e.message}" for e in errs[:20])
         raise SystemExit(f"Schema validation failed ({len(errs)} error(s)):\n{msgs}")
+    # The cross-checks the schema cannot express — chiefly a day scheduling a restaurant
+    # on a weekday it is closed. Build-time, because a PDF that ships that is worse than
+    # one that fails to build.
+    try:
+        sys.path.insert(0, os.path.join(HERE, 'schema'))
+        from validate import cross_checks
+    except Exception:
+        return
+    xerrs, warns = cross_checks(itin)
+    for w in warns:
+        print(f"  warning: {w}", file=sys.stderr)
+    if xerrs:
+        msgs="\n".join(f"  - {e}" for e in xerrs)
+        raise SystemExit(f"Itinerary cross-checks failed ({len(xerrs)} error(s)):\n{msgs}")
 
 def main():
     ap=argparse.ArgumentParser(description="Build an itinerary PDF from a JSON instance.")

@@ -32,11 +32,42 @@ python3 "$CLAUDE_PLUGIN_ROOT/skills/travel-profile/profiles.py" get-active-profi
 *(If `$CLAUDE_PLUGIN_ROOT` isn't set, `profiles.py` is in the sibling `travel-profile` skill
 folder — locate and run it there.)*
 
-- If it prints a JSON profile, **apply its `fixed_preferences` throughout** (dining, pace,
-  stops, logistics), and **collect the `ask_per_trip` items in Phase 1** (use any
-  `lodging_style_framework` when asking about lodging style).
-- If it exits with `NO_ACTIVE_PROFILE` (or errors), the user has **no profile yet** — say so and
-  run the **`travel-profile` onboarding** to create one, then continue.
+If a private profile repo is configured, pull it first so you are not reading a stale copy:
+
+```bash
+python3 "$CLAUDE_PLUGIN_ROOT/skills/travel-profile/profile_sync.py" pull
+```
+
+It is safe to run always — with no repo configured, or with no network, it says so and changes
+nothing.
+
+- If it prints a **markdown profile** (YAML frontmatter plus prose sections), apply it throughout
+  — dining, pace, stops, logistics — and **collect the `## Ask per trip` items in Phase 1**, using
+  the lodging style framework recorded there when asking about lodging style.
+- Read the frontmatter carefully, not just the prose. Three fields change the plan directly:
+  - **`diet.strictness`** — the real rule, in the traveller's words. The label in
+    `diet.restriction` is a summary; `strictness` is what you must actually respect.
+  - **`budget.per_meal_cap`** (with `currency`) — a hard ceiling for a normal meal. Do not
+    recommend a headline dinner above it without flagging the cost explicitly and asking.
+  - **`mobility.status`** — and if it is `temporary`, check `review_after`. A date in the past
+    means the constraint has expired: ask whether it still applies rather than silently
+    applying it to this trip.
+- Read **`## Trip log`** before suggesting destinations, so you don't pitch somewhere already done.
+- A legacy JSON profile is converted to this shape automatically on read, so it still works.
+If it fails, **read which of the two failures it is** — they need different responses, and
+treating them the same is how a previous profile gets silently overwritten:
+
+- **`NO_ACTIVE_PROFILE`** — the store is there and empty, so the user genuinely has no profile.
+  Say so and run the **`travel-profile` onboarding** to create one, then continue.
+- **`PROFILE_STORE_MISSING`** — no store exists at all. On a fresh cloud container this usually
+  means a profile from an earlier session **was lost with the container**, not that the user is
+  new. Do **not** silently re-interview. Show the paths the command listed, say plainly that any
+  earlier profile is gone, and offer the choice: paste a saved profile back in
+  (`profiles.py import <name>`), or onboard from scratch. If they onboard, mention they can keep
+  a copy with `profiles.py export` so the next container is one paste away.
+
+Either way the command prints **every path it checked** — pass that along rather than
+paraphrasing it, so the user can see where their profile was expected to be.
 
 Also read **`settings.research_depth`** (`"light"` or `"heavy"`; default **light** if absent) —
 it governs how much research you do. See **Research depth** below.
@@ -106,6 +137,11 @@ override just this once). Then research **at that depth** — see *Research dept
    - flag **pace** problems (too much for their preferred intensity).
 4. Converge on a final list.
 
+5. **Research the dining superset too**, not just activities — a shortlist per budget band, wider
+   than the days need, so each day's pick is chosen from alternates rather than being the only
+   candidate. Capture `cuisine`, verified `hours`, a structured `closed` array, `why` and at least
+   one dish for each. This becomes the `dining` block.
+
 **Gate 2:** Present the final activity/sight list and ask: *"Happy with this list — shall
 we work it into a day-by-day outline?"* Wait for approval.
 
@@ -130,8 +166,10 @@ Work out:
 - **Per-day "Worth Knowing"** — real history/significance of each place (factual, public domain —
   see copyright limits).
 
-**Gate 3:** Share the full outline (day-by-day, logistics, lodging areas, dining) and ask:
-*"Does this outline work? If you approve, I'll generate the PDF."* Wait for approval.
+**Gate 3:** Share the full outline (day-by-day, logistics, lodging areas, dining) **and the
+dining page content** — the shortlist grouped by budget, plus the cuisine spread across dinners,
+so an imbalance is visible before it is printed rather than after. Ask: *"Does this outline work?
+If you approve, I'll generate the PDF."* Wait for approval.
 
 ---
 
@@ -204,7 +242,19 @@ Key mappings from the conversation:
   Category strings are free-form; icons are looked up automatically with a neutral fallback.
 - **packing** — items (`label` + `body`) and an optional footnote; make it trip-specific.
 
+- **dining** — the optional *Where to Eat* page: the whole trip's shortlist grouped by budget
+  band, with `cuisine`, `hours`, a structured `closed` array, `why` and `dishes` per entry. The
+  engine derives the cuisine tally; never write it into the data. `days[].where_to_eat` stays —
+  that is the **chosen** meal for that day; `dining` is the **shortlist it came from**, including
+  alternates. Different jobs, so keep both.
+- **days[].date** (ISO) or **weekday** — optional and never rendered. They exist so the validator
+  can catch a restaurant scheduled on a day it is closed. Add them whenever real dates are known;
+  without them that check silently cannot run.
+
 **Content sizing (learned the hard way):**
+- **Dining page ≈ 9–10 entries per page** at 4–6 lines each (measured: ~60–80pt per entry against
+  a 712pt frame). Eleven entries across three budget groups came to two pages with room left.
+  Each entry is kept whole; a group is *not*, so a long group flows across the break naturally.
 - Keep lodging property **reasons ~6 words** and **notes ~1 sentence** so the row stays on one line.
 - **Planning capacity ≈ 4 panels + ~5 lodging rows per page.** Beyond that, consolidate panels or
   let Planning flow to a second page with each subsection kept whole — both are fine.
@@ -221,6 +271,12 @@ Key mappings from the conversation:
   hotel; never area-only; no prices.
 - **Illustration-free except the map.** No photos, no generated art, no stock imagery.
 - **Respect the profile's dietary restrictions, verified.** Every eatery must genuinely serve the
-  traveller's diet.
+  traveller's diet. Check `diet.strictness`, not just the label.
+- **Every dining entry carries verified hours, a `closed` array, at least one dish, and a reason.**
+  Put closures in `closed`, never as prose inside `hours` — prose cannot be checked, and a day
+  scheduled against a closed restaurant is the one dining error that reaches the traveller.
+  The hours in `schema/pnw_example.json` are **illustrative**: it is a layout example, not a
+  source of verified opening times. Research them fresh every trip.
+- **Respect `budget.per_meal_cap`.** If a recommendation exceeds it, say so and ask first.
 - **Preferences are data, not structure.** Keep them in the profile, never in the engine.
 - **Verify the PDF** by rasterising every page before delivering.
