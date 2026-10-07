@@ -29,9 +29,21 @@ Read the `STATUS_JSON=...` line it prints:
   ```bash
   python3 "$CLAUDE_PLUGIN_ROOT/skills/plan-trip/fetch_data.py"
   ```
-  This is idempotent — it downloads only what's missing and is an instant no-op once cached. If
-  the download fails (e.g. no network), don't block the greeting: note that maps will be fetched
-  on the first trip instead, and carry on.
+  This is idempotent — it downloads only what's missing and is an instant no-op once cached. It
+  tries the Natural Earth CDN first and falls back to Natural Earth's GitHub repository, which
+  matters in a sandbox where the CDN is blocked by egress policy.
+
+  If it fails, it prints **which hosts were blocked and what to do**. Don't block the greeting and
+  don't paste a stack trace: tell the user the map data couldn't be fetched, pass on the hosts it
+  named, and carry on — everything except the map builds offline. `fetch_data.py --check` reports
+  what is cached without downloading anything.
+
+- **Also pull the traveller profile** if a private profile repo is configured, so a cloud session
+  starts from the shared copy rather than re-interviewing someone who already has one:
+  ```bash
+  python3 "$CLAUDE_PLUGIN_ROOT/skills/travel-profile/profile_sync.py" pull
+  ```
+  Safe to run always — with no repo configured, or no network, it says so and changes nothing.
 
 ## 2. Greet + show the menu
 
