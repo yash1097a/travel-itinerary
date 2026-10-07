@@ -369,9 +369,9 @@ def _needs_booking(e):
     b = (e or {}).get('booking') or ''
     return any(w in b.lower() for w in RESERVE_WORDS)
 
-def pick_cell(place, e, exact=True):
-    """One calendar cell entry: name, cuisine and price, one dish, and a booking flag only
-    when the place actually takes reservations -- the one action the reader must take."""
+def pick_cell(place, e, exact=True, region=''):
+    """One calendar cell entry: name, then cuisine · price · Map link, and a booking flag
+    only when the place actually takes reservations -- the one action the reader must take."""
     st_name = ps('pcn', fn='Helvetica-Bold', fs=7.6, ld=9.6, col=GREEN)
     st_meta = ps('pcm', fs=6.6, ld=8.6, col=MED)
     # The shortlist name is the clean one, so use it when the day's wording is just that
@@ -386,11 +386,10 @@ def pick_cell(place, e, exact=True):
             name = en
     out = [Paragraph(name, st_name)]
     if e:
+        link = '<link href="{}"><font color="#2A5C52"><b><u>Map</u></b></font></link>'.format(
+            maps_url(e, region).replace('&', '&amp;'))
         meta = ' · '.join(x for x in (e.get('cuisine'), e.get('price')) if x)
-        if meta:
-            out.append(Paragraph(meta, st_meta))
-        if e.get('dishes'):
-            out.append(Paragraph('<i>{}</i>'.format(e['dishes'][0]), st_meta))
+        out.append(Paragraph(' · '.join(x for x in (meta, link) if x), st_meta))
         if _needs_booking(e):
             out.append(Paragraph('<font color="#C4973A"><b>{}</b></font>'.format(e['booking']),
                                  st_meta))
@@ -411,7 +410,8 @@ def dining_calendar(itin):
                 picked.add(id(e))
             if cells[slot]:
                 cells[slot].append(Spacer(1, 4))
-            cells[slot] += pick_cell(r['place'], e, exact=(how == 'exact'))
+            cells[slot] += pick_cell(r['place'], e, exact=(how == 'exact'),
+                                     region=itin['region'].get('title', ''))
         label = [Paragraph(wd, ps('cdw', fn='Helvetica-Bold', fs=8, ld=10, col=GOLD)),
                  Paragraph(dt, ps('cdd', fs=6.8, ld=9, col=MED))]
         data.append([label] + [cells[k] or Paragraph('—', ps('cde', fs=7, col=PALE))
