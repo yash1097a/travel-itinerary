@@ -236,6 +236,10 @@ Key mappings from the conversation:
 - **meta / region / cover** — title, subtitle, date label, nights/days, waypoints, cover stats.
 - **summary** — one intro paragraph; 4 `glance_tiles` (value + short label); `activity_tags`
   (pills); 5-ish `highlights` (name + short desc).
+  **Trip at a Glance has a high bar.** A glance tile must define the trip or change how a day
+  is planned: weather, light, terrain, or a signature experience. Logistics never make the
+  headlines — tolls, parking, fees, bookings and transfers belong in `planning`. Private
+  occasions (a proposal, a surprise) stay off the summary page too.
 - **map** — `stops[]` with **real lat/lon** in route order and a short `sublabel`; optional
   `legs[]` (one drive-time/distance string per leg, `len(stops)-1`). The engine auto-fits the
   view and de-conflicts labels; only set `label_offset` / `bbox` to fix a rare clash.
