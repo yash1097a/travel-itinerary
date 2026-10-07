@@ -87,8 +87,8 @@ rows** per page; beyond that, consolidate panels or accept a clean two-page Plan
 **Where to Eat (two pages).** `03` section badge + serif heading + the dining note, then:
 - **Your Picks calendar** — one table, days down the side (gold weekday + date), three meal
   columns across (MORNING / LUNCH / DINNER) under a green header row, alternating white/sage
-  rows. Each cell holds the day's pick(s): **name (bold green)**, cuisine · price, one dish in
-  italics, and a **gold booking note only when the place takes reservations**. Picks are read
+  rows. Each cell holds the day's pick(s): **name (bold green)**, cuisine · price · a teal
+  underlined **Map** link, and a **gold booking note only when the place takes reservations**. Picks are read
   from `days[].where_to_eat` and resolved to shortlist entries with the validator's matcher;
   the category maps to a column (coffee/breakfast/bakery → Morning, lunch/brunch → Lunch,
   dinner/drinks/dessert → Dinner). The engine-derived cuisine tally sits centred beneath.
@@ -96,7 +96,8 @@ rows** per page; beyond that, consolidate panels or accept a clean two-page Plan
   sage cards**, grouped by budget under letter-spaced gold group labels with a gold rule.
   Cards carry name; area · cuisine · price · a teal underlined **Map** link (the entry's
   `map_url`, else a Google Maps search for name + area + region title); hours with a gold
-  *closed* chip; and why. **No dishes on these cards** — dishes appear in the calendar.
+  *closed* chip; and why. **No dishes** on cards or in the calendar; `dishes` stay in the data
+  for the validator and for the conversation.
   The page is omitted when every entry was picked.
 
 **Parking (own page, optional).** Section badge + serif heading ("Where to Park") + a short
