@@ -137,6 +137,11 @@ override just this once). Then research **at that depth** — see *Research dept
    - flag **pace** problems (too much for their preferred intensity).
 4. Converge on a final list.
 
+5. **Research the dining superset too**, not just activities — a shortlist per budget band, wider
+   than the days need, so each day's pick is chosen from alternates rather than being the only
+   candidate. Capture `cuisine`, verified `hours`, a structured `closed` array, `why` and at least
+   one dish for each. This becomes the `dining` block.
+
 **Gate 2:** Present the final activity/sight list and ask: *"Happy with this list — shall
 we work it into a day-by-day outline?"* Wait for approval.
 
@@ -161,8 +166,10 @@ Work out:
 - **Per-day "Worth Knowing"** — real history/significance of each place (factual, public domain —
   see copyright limits).
 
-**Gate 3:** Share the full outline (day-by-day, logistics, lodging areas, dining) and ask:
-*"Does this outline work? If you approve, I'll generate the PDF."* Wait for approval.
+**Gate 3:** Share the full outline (day-by-day, logistics, lodging areas, dining) **and the
+dining page content** — the shortlist grouped by budget, plus the cuisine spread across dinners,
+so an imbalance is visible before it is printed rather than after. Ask: *"Does this outline work?
+If you approve, I'll generate the PDF."* Wait for approval.
 
 ---
 
@@ -235,7 +242,19 @@ Key mappings from the conversation:
   Category strings are free-form; icons are looked up automatically with a neutral fallback.
 - **packing** — items (`label` + `body`) and an optional footnote; make it trip-specific.
 
+- **dining** — the optional *Where to Eat* page: the whole trip's shortlist grouped by budget
+  band, with `cuisine`, `hours`, a structured `closed` array, `why` and `dishes` per entry. The
+  engine derives the cuisine tally; never write it into the data. `days[].where_to_eat` stays —
+  that is the **chosen** meal for that day; `dining` is the **shortlist it came from**, including
+  alternates. Different jobs, so keep both.
+- **days[].date** (ISO) or **weekday** — optional and never rendered. They exist so the validator
+  can catch a restaurant scheduled on a day it is closed. Add them whenever real dates are known;
+  without them that check silently cannot run.
+
 **Content sizing (learned the hard way):**
+- **Dining page ≈ 9–10 entries per page** at 4–6 lines each (measured: ~60–80pt per entry against
+  a 712pt frame). Eleven entries across three budget groups came to two pages with room left.
+  Each entry is kept whole; a group is *not*, so a long group flows across the break naturally.
 - Keep lodging property **reasons ~6 words** and **notes ~1 sentence** so the row stays on one line.
 - **Planning capacity ≈ 4 panels + ~5 lodging rows per page.** Beyond that, consolidate panels or
   let Planning flow to a second page with each subsection kept whole — both are fine.
@@ -252,6 +271,12 @@ Key mappings from the conversation:
   hotel; never area-only; no prices.
 - **Illustration-free except the map.** No photos, no generated art, no stock imagery.
 - **Respect the profile's dietary restrictions, verified.** Every eatery must genuinely serve the
-  traveller's diet.
+  traveller's diet. Check `diet.strictness`, not just the label.
+- **Every dining entry carries verified hours, a `closed` array, at least one dish, and a reason.**
+  Put closures in `closed`, never as prose inside `hours` — prose cannot be checked, and a day
+  scheduled against a closed restaurant is the one dining error that reaches the traveller.
+  The hours in `schema/pnw_example.json` are **illustrative**: it is a layout example, not a
+  source of verified opening times. Research them fresh every trip.
+- **Respect `budget.per_meal_cap`.** If a recommendation exceeds it, say so and ask first.
 - **Preferences are data, not structure.** Keep them in the profile, never in the engine.
 - **Verify the PDF** by rasterising every page before delivering.

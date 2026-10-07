@@ -127,6 +127,7 @@
 
   "days": [
     {
+      "date": "2026-10-06",
       "title": "Arrive Seattle",
       "subtitle": "One Urban Night",
       "timeline": [
@@ -145,6 +146,7 @@
       ]
     },
     {
+      "date": "2026-10-07",
       "title": "Drive to Olympic Peninsula",
       "subtitle": "Seattle → Kalaloch Area",
       "timeline": [
@@ -155,7 +157,7 @@
       "where_to_eat": [
         {"category": "Coffee", "place": "Batdorf and Bronson — Olympia (en route)", "note": "One of the great Pacific Northwest specialty roasters, directly on your route through Olympia. The Dancing Goats espresso is a classic."},
         {"category": "Lunch", "place": "Pack provisions in Olympia", "note": "The Olympia Food Co-op is an excellent stop for vegetarian picnic supplies — pack enough for tomorrow's full day in the Hoh as well."},
-        {"category": "Dinner", "place": "Lodge restaurant, Kalaloch", "note": "The on-site restaurant is the only practical option this evening. The seasonal menu includes vegetarian dishes — ask what's available. The ocean view from the dining room is the real draw."}
+        {"category": "Dinner", "place": "Creekside Restaurant, Kalaloch", "note": "The on-site restaurant is the only practical option this evening. The seasonal menu includes vegetarian dishes — ask what's available. The ocean view from the dining room is the real draw."}
       ],
       "worth_knowing": [
         {"place": "Olympic National Park", "blurb": "Established in 1938 by Franklin D. Roosevelt after a personal visit two years earlier, the park protects an almost unheard-of range of ecosystems within one boundary — glaciated peaks, old-growth temperate rainforest, and over 70 miles of wild Pacific coastline. UNESCO designated it a World Heritage Site in 1981 and an International Biosphere Reserve, recognizing an ecological completeness found in very few places left on Earth."},
@@ -163,6 +165,7 @@
       ]
     },
     {
+      "date": "2026-10-08",
       "title": "Ruby Beach + Hoh Rainforest",
       "subtitle": "Full Olympic Day",
       "timeline": [
@@ -171,9 +174,9 @@
         {"time": "4:00 PM", "title": "Return to Kalaloch", "body": "Stop at any of the numbered beaches along US-101 on the way back (Beach 4 has accessible tide pool viewing). Aim to be back for sunset over the Pacific from the bluffs."}
       ],
       "where_to_eat": [
-        {"category": "Coffee", "place": "Lodge restaurant, Kalaloch", "note": "Get an early cup before the drive to Ruby Beach — the cafe opens early."},
+        {"category": "Coffee", "place": "Creekside Restaurant, Kalaloch", "note": "Get an early cup before the drive to Ruby Beach — the cafe opens early."},
         {"category": "Lunch", "place": "Packed provisions — essential", "note": "No food at Ruby Beach or beyond the Hoh visitor centre kiosk. Use what you packed in Olympia."},
-        {"category": "Dinner", "place": "Lodge restaurant, Kalaloch", "note": "Same restaurant as the previous night — vary your order, and ask about that evening's vegetarian specials."}
+        {"category": "Dinner", "place": "Creekside Restaurant, Kalaloch", "note": "Same restaurant as the previous night — vary your order, and ask about that evening's vegetarian specials."}
       ],
       "worth_knowing": [
         {"place": "Ruby Beach", "blurb": "Named for the small garnet crystals that wash down from inland deposits and catch the light in the sand at the tideline. It sits inside the Olympic Coast National Marine Sanctuary, one of the largest protected marine areas in the country, and the sea stacks offshore are the eroded remnants of a coastline that has been retreating for thousands of years."},
@@ -181,6 +184,7 @@
       ]
     },
     {
+      "date": "2026-10-09",
       "title": "Drive to Cannon Beach",
       "subtitle": "via Astoria",
       "timeline": [
@@ -201,6 +205,7 @@
       ]
     },
     {
+      "date": "2026-10-10",
       "title": "Columbia River Gorge",
       "subtitle": "Fly Home — Red-Eye",
       "timeline": [
@@ -210,7 +215,7 @@
         {"time": "5:30 PM", "title": "Return to Portland — Red-Eye Departure", "body": "60 miles west on I-84, about an hour. Return the rental at PDX and allow 90 minutes before boarding. Most red-eyes to JFK or EWR depart between 10:00 PM and midnight, landing in New York by 6:00–7:00 AM the next morning."}
       ],
       "where_to_eat": [
-        {"category": "Coffee", "place": "Sleepy Monk, to go — Cannon Beach (morning)", "note": "Get a cup and a bag of beans before leaving the coast."},
+        {"category": "Coffee", "place": "Sleepy Monk Coffee Roasters, to go", "note": "Get a cup and a bag of beans before leaving the coast."},
         {"category": "Coffee", "place": "Dog River Coffee — Hood River", "note": "The local institution — excellent espresso, comfortable space."},
         {"category": "Lunch", "place": "Celilo Restaurant — Hood River", "note": "Farm-to-table and genuinely seasonal, with vegetarian dishes that treat plants as the main event rather than a side. The meal to linger over. Casual alternative: pFriem Family Brewers, for excellent craft beer alongside a strong food menu."}
       ],
@@ -221,6 +226,39 @@
       ]
     }
   ],
+
+  "dining": {
+    "heading": "Where to Eat",
+    "note": "The shortlist each day's pick came from, with alternates. Hours shift by season — reconfirm the two reservations before you fly.",
+    "groups": [
+      {
+        "label": "Coffee & under $20",
+        "entries": [
+  {"name": "Elm Coffee Roasters", "area": "Pioneer Square, Seattle", "cuisine": "Coffee", "price": "$5–8pp", "hours": "Daily 7–4", "why": "Quiet, bright room ten minutes from Pike Place — the gentlest possible start after a long flight.", "dishes": ["single-origin pourover", "cardamom bun"], "booking": "Walk-in", "tags": ["step-free"]},
+  {"name": "Batdorf and Bronson", "area": "Olympia", "cuisine": "Coffee", "price": "$5–8pp", "hours": "Daily 7–5", "why": "The one genuinely good stop on the I-5 stretch; roasts on site.", "dishes": ["Dancing Goats espresso"], "booking": "Walk-in"},
+  {"name": "Pilot House Coffee", "area": "Astoria", "cuisine": "Coffee", "price": "$5–8pp", "hours": "Daily 7–3", "why": "Riverfront windows — a good place to wait out a squall.", "dishes": ["cortado"], "booking": "Walk-in"},
+  {"name": "Sleepy Monk Coffee Roasters", "area": "Cannon Beach", "cuisine": "Coffee", "price": "$5–9pp", "hours": "Thu–Mon 8–2", "closed": ["Tuesday", "Wednesday"], "why": "Organic roaster a short walk from Haystack Rock; queues by nine on a clear morning.", "dishes": ["French press", "vegan scone"], "booking": "Walk-in", "tags": ["long queue"]},
+  {"name": "Dog River Coffee", "area": "Hood River", "cuisine": "Coffee", "price": "$5–8pp", "hours": "Daily 6–5", "why": "Strong espresso before the Gorge waterfalls, and it opens early enough for sunrise light.", "dishes": ["macchiato"], "booking": "Walk-in"}
+        ]
+      },
+      {
+        "label": "$20–40",
+        "entries": [
+  {"name": "Cafe Campagne", "area": "Pike Place Market, Seattle", "cuisine": "French", "price": "$22–32pp", "hours": "Daily 11–9", "why": "A calm room just off the Market crush, with vegetarian mains rather than token sides.", "dishes": ["vegetarian tartine", "frisee salad"], "booking": "Reserve ahead for dinner"},
+  {"name": "Street 14 Cafe", "area": "Astoria", "cuisine": "Cafe", "price": "$15–25pp", "hours": "Daily 8–3", "why": "Half-way lunch that does not cost an hour; generous vegetarian options.", "dishes": ["veggie scramble", "tomato soup"], "booking": "Walk-in"},
+  {"name": "Celilo Restaurant", "area": "Hood River", "cuisine": "Pacific Northwest", "price": "$20–35pp", "hours": "Tue–Sun 11:30–9", "closed": ["Monday"], "why": "Local produce, properly composed vegetarian plates — the best last lunch of the trip.", "dishes": ["wild mushroom risotto", "beet salad"], "booking": "Reserve ahead"},
+  {"name": "Creekside Restaurant, Kalaloch", "area": "Kalaloch Lodge, Olympic NP", "cuisine": "Pacific Northwest", "price": "$24–38pp", "hours": "Daily 7–10, 11:30–2:30, 5–9", "why": "The only real option for miles, and it knows it — but the ocean-side window seats earn the visit. Ask for the vegetarian plate; it is not on the printed menu.", "dishes": ["vegetable plate", "chowder (ask for the vegetarian soup)"], "booking": "Reserve at check-in", "tags": ["only option nearby"]}
+        ]
+      },
+      {
+        "label": "Splurge",
+        "entries": [
+  {"name": "The Whale Wins", "area": "Eastlake, Seattle", "cuisine": "Wood-fired", "price": "$45–65pp", "hours": "Tue–Sun 5–10", "closed": ["Monday"], "why": "Wood-oven vegetables are the whole point here, not a concession — the strongest first-night dinner in the city.", "dishes": ["roasted carrots with yoghurt", "wood-oven chicories"], "booking": "Reserve 2–3 weeks ahead"},
+  {"name": "Newman's at 988", "area": "Cannon Beach", "cuisine": "French-Italian", "price": "$50–70pp", "hours": "Wed–Sun 5–9", "closed": ["Monday", "Tuesday"], "why": "Tiny, formal, and the one destination dinner on the coast; the kitchen will build a vegetarian course on request.", "dishes": ["hand-made pasta", "souffle"], "booking": "Reserve, essential"}
+        ]
+      }
+    ]
+  },
 
   "packing": {
     "heading": "What to Bring",
