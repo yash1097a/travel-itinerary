@@ -187,6 +187,11 @@ If you approve, I'll generate the PDF."* Wait for approval.
    on a near-empty page), tighten or consolidate the content (see *Planning capacity*).
 5. Deliver the PDF and offer edits.
 
+**After delivery, changes need explicit approval.** Once a PDF has been delivered, never edit
+the itinerary JSON or rebuild the PDF on your own initiative. Present the change as options
+with a recommendation, and rebuild only after the traveller explicitly approves that specific
+change. A question or a preference ("is there something more upscale?") is not approval.
+
 > Setup: `pip install -r requirements.txt` once (reportlab, geopandas, shapely, pyogrio,
 > matplotlib, numpy, pillow, svglib, jsonschema). Run the scripts from this skill folder
 > (`$CLAUDE_PLUGIN_ROOT/skills/plan-trip`). Fonts and icons are bundled; the map shapefiles
@@ -231,6 +236,10 @@ Key mappings from the conversation:
 - **meta / region / cover** — title, subtitle, date label, nights/days, waypoints, cover stats.
 - **summary** — one intro paragraph; 4 `glance_tiles` (value + short label); `activity_tags`
   (pills); 5-ish `highlights` (name + short desc).
+  **Trip at a Glance has a high bar.** A glance tile must define the trip or change how a day
+  is planned: weather, light, terrain, or a signature experience. Logistics never make the
+  headlines — tolls, parking, fees, bookings and transfers belong in `planning`. Private
+  occasions (a proposal, a surprise) stay off the summary page too.
 - **map** — `stops[]` with **real lat/lon** in route order and a short `sublabel`; optional
   `legs[]` (one drive-time/distance string per leg, `len(stops)-1`). The engine auto-fits the
   view and de-conflicts labels; only set `label_offset` / `bbox` to fix a rare clash.
@@ -252,9 +261,12 @@ Key mappings from the conversation:
   without them that check silently cannot run.
 
 **Content sizing (learned the hard way):**
-- **Dining page ≈ 9–10 entries per page** at 4–6 lines each (measured: ~60–80pt per entry against
-  a 712pt frame). Eleven entries across three budget groups came to two pages with room left.
-  Each entry is kept whole; a group is *not*, so a long group flows across the break naturally.
+- **Dining is two pages:** a *Your Picks* calendar built from `days[].where_to_eat`, then an
+  *Also Suggested* grid of every unpicked shortlist entry, three cards to a row. So that each
+  pick lands in the calendar with its details, give every `where_to_eat` row **one** place
+  whose `place` starts with the shortlist `name` (an area suffix like `— Del Mar` is fine);
+  two places in one row (`A & B`) show as written but only the first is resolved. A 6-day
+  calendar plus ~15 suggestions fits the two pages.
 - Keep lodging property **reasons ~6 words** and **notes ~1 sentence** so the row stays on one line.
 - **Planning capacity ≈ 4 panels + ~5 lodging rows per page.** Beyond that, consolidate panels or
   let Planning flow to a second page with each subsection kept whole — both are fine.
@@ -266,6 +278,8 @@ Key mappings from the conversation:
 ## Hard rules (do not violate)
 
 - **Stop at every approval gate.** Never skip a phase or generate without Gate 3 approval.
+- **No PDF changes without explicit approval.** After delivery, every change is proposed as
+  options first; edit the JSON and rebuild only once the traveller approves that change.
 - **Fresh research every trip.** No recycled content.
 - **Lodging = neighbourhood + 2–3 suggested properties + rationale.** Never one prescriptive
   hotel; never area-only; no prices.

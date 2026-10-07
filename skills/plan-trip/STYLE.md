@@ -84,6 +84,19 @@ Planning may **flow to a second page** for content-heavy trips — each panel is
 `KeepTogether` so subsections never split. Practical capacity ≈ **4 panels + ~5 lodging
 rows** per page; beyond that, consolidate panels or accept a clean two-page Planning.
 
+**Where to Eat (two pages).** `03` section badge + serif heading + the dining note, then:
+- **Your Picks calendar** — one table, days down the side (gold weekday + date), three meal
+  columns across (MORNING / LUNCH / DINNER) under a green header row, alternating white/sage
+  rows. Each cell holds the day's pick(s): **name (bold green)**, cuisine · price, one dish in
+  italics, and a **gold booking note only when the place takes reservations**. Picks are read
+  from `days[].where_to_eat` and resolved to shortlist entries with the validator's matcher;
+  the category maps to a column (coffee/breakfast/bakery → Morning, lunch/brunch → Lunch,
+  dinner/drinks/dessert → Dinner). The engine-derived cuisine tally sits centred beneath.
+- **Also Suggested** — every shortlist entry *not* picked, as a compact **three-column grid of
+  sage cards**, grouped by budget under letter-spaced gold group labels with a gold rule.
+  Cards carry name, area · cuisine · price, hours with a gold *closed* chip, why, and dishes.
+  The page is omitted when every entry was picked.
+
 **Day page.** Green **day-header band** with a gold left-accent bar, gold "DAY N", serif
 day title, and a gold subtitle note (top-right). Below it, the **vertical timeline spine**
 — a gold line with green/gold node dots, gold time labels, and wrapped copy. Then two
