@@ -24,22 +24,29 @@ content onto a new one. The *document and process* are repeatable; the *content*
 ## Before you start: load the active traveller profile
 
 This planner is driven by the user's **traveller profile** (created and managed by the
-sibling `travel-profile` skill). Load it first:
+sibling `travel-profile` skill). Load it first.
 
-```bash
-python3 "$CLAUDE_PLUGIN_ROOT/skills/travel-profile/profiles.py" get-active-profile
-```
-*(If `$CLAUDE_PLUGIN_ROOT` isn't set, `profiles.py` is in the sibling `travel-profile` skill
-folder — locate and run it there.)*
-
-If a private profile repo is configured, pull it first so you are not reading a stale copy:
+**Pull the private profile repo before you read the profile**, so you aren't reading a stale copy
+or, on a fresh container, finding nothing at all:
 
 ```bash
 python3 "$CLAUDE_PLUGIN_ROOT/skills/travel-profile/profile_sync.py" pull
 ```
+*(If `$CLAUDE_PLUGIN_ROOT` isn't set, these scripts are in the sibling `travel-profile` skill
+folder — locate and run them there.)*
 
-It is safe to run always — with no repo configured, or with no network, it says so and changes
-nothing.
+It always exits 0, so **read its first line**. `PROFILE_REPO_OK`, `PROFILE_REPO_NOT_CONFIGURED`
+and `PROFILE_REPO_STALE` (using the local copy) mean carry on. **`PROFILE_REPO_UNREACHABLE`** means
+a repo is configured but couldn't be cloned, so the traveller's saved profile exists and was not
+loaded. Stop, tell them which repo and the `reason:` it gave (`auth`, `not_found`, `network`), and
+ask whether to fix access and retry, import a saved copy, or plan without their preferences. Don't
+onboard and don't treat a `PROFILE_STORE_MISSING` that follows as a new user.
+
+Then read the active profile:
+
+```bash
+python3 "$CLAUDE_PLUGIN_ROOT/skills/travel-profile/profiles.py" get-active-profile
+```
 
 - If it prints a **markdown profile** (YAML frontmatter plus prose sections), apply it throughout
   — dining, pace, stops, logistics — and **collect the `## Ask per trip` items in Phase 1**, using

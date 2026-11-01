@@ -74,6 +74,11 @@ Then set `TRAVEL_PROFILE_REPO=<private-repo-url>` in your cloud environment, bec
 config file is ephemeral too. Each session runs `profile_sync.py pull` (the planner does this for
 you) and `profile_sync.py push` after a change.
 
+In a cloud session the container also needs **GitHub access to the profile repo**. The env var holds
+only the URL, so select the profile repo along with this one when you start the session. If the pull
+can't clone it, it prints `PROFILE_REPO_UNREACHABLE` with a reason (`auth`, `not_found`, `network`)
+and the skills stop and ask, rather than treating you as a new user.
+
 The clone is shallow, blobless and sparse to `profiles/`, so pointing it at a repo that also holds
 large files costs almost nothing.
 

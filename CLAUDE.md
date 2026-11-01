@@ -55,6 +55,11 @@ then legacy JSON (read-only, converted on read). Both `profiles.py` and `init/st
 The CLI reports two failure states, and the skills handle them differently: `PROFILE_STORE_MISSING`
 (likely lost with an ephemeral container) and `NO_ACTIVE_PROFILE` (the user is new). `profile_sync.py`
 syncs with a private git repo (a shallow, blobless clone sparse to `profiles/`) and refuses a public repo.
+`pull` always exits 0 and leads with a marker: `PROFILE_REPO_OK`, `PROFILE_REPO_NOT_CONFIGURED`,
+`PROFILE_REPO_STALE` (local copy used), or `PROFILE_REPO_UNREACHABLE` plus `reason:` (a repo is
+configured but couldn't be cloned, so the saved profile is not loaded and must never be read as a new
+user). The skills pull *before* reading the profile or running `status.py`, whose `STATUS_JSON` also
+reports `profile_repo.configured`/`cloned`.
 
 **Stdlib-only constraint.** `status.py`, `profile_store.py`, `profile_sync.py`, `profiles.py` and
 `fetch_data.py` run before dependencies are installed, so they must not import third-party packages.

@@ -11,12 +11,29 @@ a lecture.
 
 ## 1. Ready the backend (quietly)
 
-Run the status check (it's read-only and fast):
+**First, pull the traveller profile** from the private profile repo, if one is configured. Do this
+*before* the status check, so the status (and the greeting built from it) sees the profile:
+
+```bash
+python3 "$CLAUDE_PLUGIN_ROOT/skills/travel-profile/profile_sync.py" pull
+```
+*(If `$CLAUDE_PLUGIN_ROOT` isn't set, the script is in the sibling `travel-profile` skill folder.)*
+
+It always exits 0, so **read its first line**. That line is a marker, and it decides the greeting:
+
+- **`PROFILE_REPO_OK`** or **`PROFILE_REPO_NOT_CONFIGURED`**: carry on.
+- **`PROFILE_REPO_STALE`**: the repo couldn't be reached, so you're using the copy already on this
+  machine. Carry on, and mention it in one line.
+- **`PROFILE_REPO_UNREACHABLE`**: a profile repo **is configured** but couldn't be cloned, so the
+  user's saved profile **exists and is not loaded**. This is *not* a new user. Do **not** lead with
+  onboarding and do not offer to create a profile as the next step. See **section 3**.
+
+Then run the status check (it's read-only and fast):
 
 ```bash
 python3 "$CLAUDE_PLUGIN_ROOT/skills/init/status.py"
 ```
-*(If `$CLAUDE_PLUGIN_ROOT` isn't set, `status.py` is in this skill's folder — find and run it.)*
+*(If `$CLAUDE_PLUGIN_ROOT` isn't set, `status.py` is in this skill's folder. Find and run it.)*
 
 Read the `STATUS_JSON=...` line it prints:
 - **If `deps_missing` is non-empty**, install them once:
@@ -38,17 +55,14 @@ Read the `STATUS_JSON=...` line it prints:
   named, and carry on — everything except the map builds offline. `fetch_data.py --check` reports
   what is cached without downloading anything.
 
-- **Also pull the traveller profile** if a private profile repo is configured, so a cloud session
-  starts from the shared copy rather than re-interviewing someone who already has one:
-  ```bash
-  python3 "$CLAUDE_PLUGIN_ROOT/skills/travel-profile/profile_sync.py" pull
-  ```
-  Safe to run always — with no repo configured, or no network, it says so and changes nothing.
+- **If `profile_repo.configured` is true but `profile_repo.cloned` is false**, the pull above
+  didn't succeed. Treat it as `PROFILE_REPO_UNREACHABLE`, even if you skipped the pull.
 
 ## 2. Greet + show the menu
 
 Present a short, warm greeting followed by the menu below. **Tailor it to the status:**
 
+- **The saved profile couldn't be loaded** (section 3) → lead with that (see section 3).
 - **No profiles yet** → lead with setting up a profile; make option 1 the profile setup and gently
   say a profile lets you tailor every trip. Offer to start onboarding right now.
 - **A profile exists** → greet in a way that acknowledges they're set up (name the active profile),
@@ -79,8 +93,31 @@ tight allowances know they're protected and how to change it.
 Then ask what they'd like to do, and **offer to start the most likely next step immediately**
 (onboarding if no profile, otherwise planning) so they don't have to type a command.
 
+## 3. If the saved profile couldn't be loaded
+
+If the pull said `PROFILE_REPO_UNREACHABLE`, put this first in the greeting, before the menu. Keep it
+to a few lines:
+
+- Say plainly that their saved profile lives in the private repo it named, and it couldn't be
+  loaded in this session.
+- Give the `reason:` line in plain words, with what fixes it:
+  - `auth`: this environment has no GitHub access to that repo. In a cloud session, start it with
+    the profile repo selected, or attach it (if you can attach repositories, offer to do that now
+    and re-run the pull). Otherwise connect GitHub and make sure the Claude GitHub App can see the
+    repo.
+  - `not_found`: the URL is wrong, or this account can't see the repo. Ask them to check
+    `TRAVEL_PROFILE_REPO`.
+  - `network`: the git host couldn't be reached (offline, or blocked by network policy).
+- **Ask** which they'd like: fix access and retry the pull, paste a saved copy back in
+  (`profiles.py import`), or carry on for now without their preferences. Only start onboarding if
+  they say so: a new profile saved now would sit beside, and could later overwrite, the real one.
+
+Then show the menu, with the profile rows as options rather than a recommended next step.
+
 ## Rules
 - Be brief and welcoming; never expose raw script/pip output.
+- A failed profile pull is never "no profile". Never offer onboarding as the next step when the
+  pull said `PROFILE_REPO_UNREACHABLE`.
 - Keep the invocation strings exact so the slash commands work.
 - If the user already asked for something specific (e.g. "plan a trip to X"), skip the menu and
   hand straight off to the right skill.

@@ -19,10 +19,21 @@ PRIVACY: the target repo must be PRIVATE. A profile holds dietary restrictions, 
 airports, health constraints and travel history. `setup` refuses a repo that GitHub
 reports as public when the `gh` CLI is available to check, and warns when it cannot.
 
+`pull` never fails a session (exit 0 when it gives up), so its FIRST line of output is a
+marker the skills must read. A failed pull is not the same as having no repo:
+
+    PROFILE_REPO_OK              cloned or fast-forwarded; the repo's profiles are loaded
+    PROFILE_REPO_NOT_CONFIGURED  no repo set ($TRAVEL_PROFILE_REPO or config.json)
+    PROFILE_REPO_UNREACHABLE     a repo IS configured but could not be cloned, so the user's
+                                 saved profile is NOT loaded. Followed by `reason: auth |
+                                 not_found | network | unknown`. Never re-onboard on this.
+    PROFILE_REPO_STALE           a clone exists but the fetch failed; using the local copy
+
 STDLIB ONLY (subprocess is stdlib) -- this runs before dependencies are installed.
 """
 import os
 import sys
+import re
 import json
 import argparse
 import subprocess
@@ -35,10 +46,13 @@ SPARSE_DIR = "profiles"
 
 def _run(args, cwd=None, check=True, quiet=False):
     """Run a command, returning (rc, stdout+stderr)."""
+    # Never block on an interactive credential prompt: a skill runs this unattended, and
+    # in a cloud container there is nobody to answer it. Credential helpers still work.
+    env = dict(os.environ, GIT_TERMINAL_PROMPT="0")
     try:
         p = subprocess.run(args, cwd=cwd, stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT, text=True, encoding="utf-8",
-                           errors="replace")
+                           errors="replace", env=env)
     except FileNotFoundError:
         return 127, "{} not found on PATH".format(args[0])
     out = (p.stdout or "").strip()
@@ -49,6 +63,40 @@ def _run(args, cwd=None, check=True, quiet=False):
 
 def _git(args, cwd=None, quiet=False):
     return _run(["git"] + args, cwd=cwd, quiet=quiet)
+
+
+def _redact(text):
+    """Strip credentials from URLs (https://user:token@host) before printing."""
+    return re.sub(r"(https?://)[^/@\s]+@", r"\1***@", text or "")
+
+
+def _failure_reason(out):
+    """Classify a failed clone from git's own words, so the skill can say what to fix."""
+    o = (out or "").lower()
+    # Network first: a proxy refusing the tunnel also says "403", but it is egress policy,
+    # not a credentials problem.
+    if any(k in o for k in ("tunnel failed", "could not resolve host", "timed out",
+                            "connection refused", "connection reset", "proxy",
+                            "network is unreachable")):
+        return "network"
+    if any(k in o for k in ("could not read username", "authentication failed",
+                            "terminal prompts disabled", "permission denied",
+                            "returned error: 403", "returned error: 401",
+                            "invalid username or password")):
+        return "auth"
+    if "not found" in o or "does not exist" in o:
+        return "not_found"   # GitHub also says this for a private repo you can't see
+    return "unknown"
+
+
+REASON_HINT = {
+    "auth": "no GitHub credentials for this repo in this environment. In a cloud session, "
+            "start it with the profile repo selected (or attach it), or connect GitHub.",
+    "not_found": "the repo does not exist, or this account cannot see it (GitHub reports a "
+                 "private repo you lack access to as not found). Check the URL and access.",
+    "network": "the git host could not be reached (offline, or blocked by network policy).",
+    "unknown": "see git's message below.",
+}
 
 
 def _is_clone(d):
@@ -121,6 +169,7 @@ def cmd_pull(a):
     """Clone or fast-forward. Never fails the caller: a session must still work offline."""
     url = store.profile_repo()
     if not url:
+        print("PROFILE_REPO_NOT_CONFIGURED")
         print("No profile repo configured. Run: profile_sync.py setup <private-repo-url>")
         return 0
     d = store.repo_clone_dir()
@@ -129,24 +178,24 @@ def cmd_pull(a):
         rc, out = _git(["clone", "--depth", "1", "--filter=blob:none", "--no-checkout",
                         url, d])
         if rc != 0:
-            print("WARNING: could not clone the profile repo -- continuing without it.")
-            print("  " + "\n  ".join(out.splitlines()[:6]))
-            return 0
+            return _unreachable(url, out)
         _git(["sparse-checkout", "init", "--cone"], cwd=d)
         _git(["sparse-checkout", "set", SPARSE_DIR], cwd=d)
         rc, out = _git(["checkout"], cwd=d)
         if rc != 0:
-            print("WARNING: sparse checkout failed -- continuing without the repo.")
-            print("  " + "\n  ".join(out.splitlines()[:6]))
-            return 0
+            return _unreachable(url, out)
+        print("PROFILE_REPO_OK")
         print("Cloned profile repo (shallow, sparse to {}/) -> {}".format(SPARSE_DIR, d))
     else:
         rc, out = _git(["fetch", "--depth", "1", "origin"], cwd=d)
         if rc != 0:
-            print("WARNING: could not reach the profile repo -- using the local copy.")
+            print("PROFILE_REPO_STALE")
+            print("reason: " + _failure_reason(out))
+            print("Could not reach the profile repo -- using the local copy in " + d)
             return 0
         dirty = _git(["status", "--porcelain"], cwd=d)[1]
         if dirty:
+            print("PROFILE_REPO_OK")
             print("Local profile changes not yet pushed -- NOT overwriting them:")
             for line in dirty.splitlines()[:10]:
                 print("  " + line)
@@ -156,6 +205,7 @@ def cmd_pull(a):
         rc, out = _git(["reset", "--hard", "origin/" + br], cwd=d)
         if rc != 0:
             _git(["reset", "--hard", "FETCH_HEAD"], cwd=d)
+        print("PROFILE_REPO_OK")
         print("Profile repo up to date ({}).".format(d))
 
     pdir = os.path.join(d, SPARSE_DIR)
@@ -165,6 +215,20 @@ def cmd_pull(a):
               .format(SPARSE_DIR))
     names = sorted(f[:-3] for f in os.listdir(pdir) if f.endswith(".md"))
     print("Profiles available from the repo: " + (", ".join(names) if names else "none yet"))
+    return 0
+
+
+def _unreachable(url, out):
+    """A repo is configured but could not be cloned. Loud, but still exit 0: the session
+    must carry on. The marker tells the skill not to treat this as a new user."""
+    reason = _failure_reason(out)
+    print("PROFILE_REPO_UNREACHABLE")
+    print("reason: " + reason)
+    print("repo: " + _redact(url))
+    print("The traveller's saved profile is in that repo and was NOT loaded.")
+    print("Why: " + REASON_HINT[reason])
+    print("git said:")
+    print("  " + "\n  ".join(_redact(out).splitlines()[:6]))
     return 0
 
 
@@ -204,10 +268,10 @@ def cmd_push(a):
 def cmd_status(a):
     url = store.profile_repo()
     d = store.repo_clone_dir()
-    print("Configured repo: " + (url or "(none)"))
+    print("Configured repo: " + (_redact(url) or "(none)"))
     print("Config file:     " + store.config_path()
           + ("" if os.path.exists(store.config_path()) else "  (absent)"))
-    print("Env override:    " + (os.environ.get("TRAVEL_PROFILE_REPO") or "(not set)"))
+    print("Env override:    " + (_redact(os.environ.get("TRAVEL_PROFILE_REPO")) or "(not set)"))
     print("Clone dir:       " + d + ("" if _is_clone(d) else "  (not cloned)"))
     if _is_clone(d):
         print("Branch:          " + _default_branch(d))

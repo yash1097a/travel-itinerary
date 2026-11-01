@@ -33,6 +33,11 @@ python3 "<this-skill-dir>/profiles.py" export > my-travel-profile.json
 python3 "<this-skill-dir>/profiles.py" import < my-travel-profile.json
 ```
 
+If a private profile repo is configured, run `profile_sync.py pull` before reading or saving, and
+read its first line. **`PROFILE_REPO_UNREACHABLE`** means the saved profile is in a repo this
+session can't clone (`reason: auth | not_found | network`). Say so and ask how to proceed. Don't
+onboard over it: a fresh profile saved now would later collide with the real one on `push`.
+
 If a command reports **`PROFILE_STORE_MISSING`**, no store exists at all — on a fresh container
 that usually means a previous profile was lost with it, not that the user is new. Show the paths
 it listed, say so plainly, and offer `import` before offering to re-onboard. **`where`** prints
