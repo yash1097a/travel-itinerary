@@ -22,7 +22,7 @@ python3 skills/plan-trip/fetch_data.py [--check]      # download (or just report
 python3 skills/plan-trip/schema/validate.py [trip.json]   # schema + cross-checks; defaults to pnw_example.json
 python3 skills/plan-trip/build_itinerary.py skills/plan-trip/schema/pnw_example.json [--out output/X.pdf]
 python3 skills/travel-profile/profiles.py where       # also: list/show/save/delete/get-active-profile/export/import/migrate/dir
-python3 skills/travel-profile/profile_sync.py status  # also: setup <url> / pull / push
+python3 skills/travel-profile/profile_sync.py status  # also: check/setup <repo> / adopt / pull / push
 ```
 
 To smoke-test a change to the engine or the schema, validate and build both examples
@@ -55,6 +55,16 @@ then legacy JSON (read-only, converted on read). Both `profiles.py` and `init/st
 The CLI reports two failure states, and the skills handle them differently: `PROFILE_STORE_MISSING`
 (likely lost with an ephemeral container) and `NO_ACTIVE_PROFILE` (the user is new). `profile_sync.py`
 syncs with a private git repo (a shallow, blobless clone sparse to `profiles/`) and refuses a public repo.
+`pull` always exits 0 and leads with a marker: `PROFILE_REPO_OK`, `PROFILE_REPO_NOT_CONFIGURED`,
+`PROFILE_REPO_STALE` (local copy used), or `PROFILE_REPO_UNREACHABLE` plus `reason:` (a repo is
+configured but couldn't be cloned, so the saved profile is not loaded and must never be read as a new
+user). The skills pull *before* reading the profile or running `status.py`, whose `STATUS_JSON` also
+reports `profile_repo.configured`/`cloned` and `environment` (`cloud`/`local`). When no profile is
+found, the skills don't onboard straight away: they follow `travel-profile/REPO_SETUP.md`, which asks
+whether the user already has a private profile repo and then connects it (`check`, `setup`) or helps
+create one, with `adopt` moving a local profile into it. `check`/`setup` accept `owner/name`, lead with
+`REPO_OK`/`REPO_PUBLIC`/`REPO_UNREACHABLE`, and `setup` records nothing unless the repo is reachable
+and not public. `pull` handles a brand-new empty repo.
 
 **Stdlib-only constraint.** `status.py`, `profile_store.py`, `profile_sync.py`, `profiles.py` and
 `fetch_data.py` run before dependencies are installed, so they must not import third-party packages.

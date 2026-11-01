@@ -6,8 +6,9 @@ description: Create, view, update, delete, or switch a traveller preference prof
 # Travel Profile Manager
 
 You manage **traveller preference profiles** for the travel-itinerary planner. Profiles are
-stored **per-user, on this machine only** (never in the plugin, never committed), via the
-helper script alongside this file:
+stored **per-user**: in the user's own private profile repo when one is set up, otherwise on this
+machine. They never go in the plugin and are never committed here. Use the helper script
+alongside this file:
 
     python3 "<this-skill-dir>/profiles.py" <command>
 
@@ -17,6 +18,18 @@ Resolve `<this-skill-dir>` as the folder containing this SKILL.md (use `$CLAUDE_
 `dir`, `where`.
 
 Pick the action from what the user asks. If it's ambiguous, ask.
+
+## Where profiles live: the private repo
+
+Profiles are best kept in the user's own **private GitHub repo**, so they survive cloud sessions
+and follow them between machines. `REPO_SETUP.md` in this folder is the guided flow for it: one
+question (*do you already have a repo?*), then connect an existing repo, set up a new one, or save
+locally for now. Use it:
+
+- when **no profile is found** and the user hasn't already said how to proceed. Ask that question
+  **before** starting onboarding,
+- when the user asks to *set up*, *connect* or *move to* a profile repo,
+- when a pull reports `PROFILE_REPO_UNREACHABLE` (path A, step 3 is the fix).
 
 ## Moving a profile between machines
 
@@ -33,6 +46,11 @@ python3 "<this-skill-dir>/profiles.py" export > my-travel-profile.json
 python3 "<this-skill-dir>/profiles.py" import < my-travel-profile.json
 ```
 
+If a private profile repo is configured, run `profile_sync.py pull` before reading or saving, and
+read its first line. **`PROFILE_REPO_UNREACHABLE`** means the saved profile is in a repo this
+session can't clone (`reason: auth | not_found | network`). Say so and ask how to proceed. Don't
+onboard over it: a fresh profile saved now would later collide with the real one on `push`.
+
 If a command reports **`PROFILE_STORE_MISSING`**, no store exists at all — on a fresh container
 that usually means a previous profile was lost with it, not that the user is new. Show the paths
 it listed, say so plainly, and offer `import` before offering to re-onboard. **`where`** prints
@@ -45,6 +63,9 @@ refuses any commit that stages one.
 ---
 
 ## Create a profile (onboarding)
+
+If no profile exists yet and the user hasn't been asked about a profile repo, do that first
+(`REPO_SETUP.md`, step 0). With a repo connected, `save` writes straight into it.
 
 Run a warm, conversational interview — **one or two questions at a time, not a wall of forms**.
 Offer sensible defaults and let them skip. Cover these dimensions, then assemble the JSON:

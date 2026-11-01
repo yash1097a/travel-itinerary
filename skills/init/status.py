@@ -60,6 +60,17 @@ def profiles_state(root):
     return sorted(names), active, (src.label if src else "")
 
 
+def profile_repo_state():
+    """Whether a private profile repo is configured, and whether it is cloned here.
+    configured and not cloned means the user's saved profile exists but is not loaded:
+    run profile_sync.py pull, and never mistake this for a new user."""
+    if store is None:
+        return {"configured": False, "cloned": False}
+    configured = bool(store.profile_repo())
+    cloned = os.path.isdir(os.path.join(store.repo_clone_dir(), ".git"))
+    return {"configured": configured, "cloned": cloned}
+
+
 def map_cached(root):
     ne = os.path.join(root, "natural_earth")
     return all(os.path.exists(os.path.join(ne, l, l + ".shp")) for l in MAP_LAYERS)
@@ -81,6 +92,7 @@ def main():
     miss = missing_deps()
     names, active, source = profiles_state(root)
     cached = map_cached(root)
+    repo = profile_repo_state()
 
     print("Travel Itinerary - status")
     print("  Dependencies: " + ("OK" if not miss else "MISSING (" + ", ".join(miss) + ")"))
@@ -98,6 +110,9 @@ def main():
         if store is not None:
             for line in store.store_report():
                 print("   " + line)
+    if repo["configured"]:
+        print("  Profile repo: " + ("cloned" if repo["cloned"]
+                                    else "configured but NOT cloned - run profile_sync.py pull"))
     print("  Map data: " + ("cached (offline-ready)" if cached
                             else "not yet - downloads automatically on your first trip"))
     print("  Data dir: " + root)
@@ -105,6 +120,9 @@ def main():
         "deps_missing": miss, "profiles": names, "active": active,
         "profile_source": source, "research_depth": depth,
         "map_cached": cached, "data_dir": root,
+        "profile_repo": repo,
+        "environment": ("cloud" if os.environ.get("CLAUDE_CODE_REMOTE", "").lower() == "true"
+                        else "local"),
     }))
 
 
