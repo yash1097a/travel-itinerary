@@ -121,6 +121,8 @@ def main():
         "profile_source": source, "research_depth": depth,
         "map_cached": cached, "data_dir": root,
         "profile_repo": repo,
+        "environment": ("cloud" if os.environ.get("CLAUDE_CODE_REMOTE", "").lower() == "true"
+                        else "local"),
     }))
 
 

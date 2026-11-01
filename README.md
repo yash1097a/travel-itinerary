@@ -60,24 +60,34 @@ Every command tells you which one it used (`profiles.py where`):
 Run `profiles.py migrate` to turn a legacy JSON profile into markdown. The JSON is left in place,
 so it is safe to run.
 
-### Cloud sessions: use a private repo
+### Keep your profile in a private repo
 
 A cloud session (e.g. claude.ai/code) gets a **fresh, ephemeral container**. The data directory
-does not survive it, so a profile saved in one session is gone in the next. A **private** git repo
-is the only mechanism that needs no per-session step:
+does not survive it, so a profile saved in one session is gone in the next. A **private** GitHub
+repo is the one place a profile survives across sessions and machines.
+
+You don't have to set this up by hand. When no profile is found, `/travel-itinerary:init` asks
+whether you already have a profile repo, then either connects it or walks you through creating one
+(the steps are in `skills/travel-profile/REPO_SETUP.md`). You can also say *"set up my profile
+repo"* any time. The commands underneath:
 
 ```
-python3 "$CLAUDE_PLUGIN_ROOT/skills/travel-profile/profile_sync.py" setup <private-repo-url>
+python3 "$CLAUDE_PLUGIN_ROOT/skills/travel-profile/profile_sync.py" check <owner/name>   # reachable? private? writes nothing
+python3 "$CLAUDE_PLUGIN_ROOT/skills/travel-profile/profile_sync.py" setup <owner/name>   # record it and clone it
+python3 "$CLAUDE_PLUGIN_ROOT/skills/travel-profile/profile_sync.py" adopt               # move a local profile into it
+python3 "$CLAUDE_PLUGIN_ROOT/skills/travel-profile/profile_sync.py" push
 ```
 
-Then set `TRAVEL_PROFILE_REPO=<private-repo-url>` in your cloud environment, because the local
-config file is ephemeral too. Each session runs `profile_sync.py pull` (the planner does this for
-you) and `profile_sync.py push` after a change.
+On a laptop, `setup` is all it takes. In a cloud environment, two settings make it stick (the
+environment menu in the session's title bar, then **Edit**):
 
-In a cloud session the container also needs **GitHub access to the profile repo**. The env var holds
-only the URL, so select the profile repo along with this one when you start the session. If the pull
-can't clone it, it prints `PROFILE_REPO_UNREACHABLE` with a reason (`auth`, `not_found`, `network`)
-and the skills stop and ask, rather than treating you as a new user.
+- the environment variable `TRAVEL_PROFILE_REPO=<repo-url>`, which says where the profile lives,
+  because the local config file is deleted with the container;
+- the profile repo under **Repositories** (where offered), or selected beside this one when you
+  start a session, so the session has GitHub access to it.
+
+If a session can't reach the repo, the pull prints `PROFILE_REPO_UNREACHABLE` with a reason (`auth`,
+`not_found`, `network`), and the skills help you fix access rather than treating you as a new user.
 
 The clone is shallow, blobless and sparse to `profiles/`, so pointing it at a repo that also holds
 large files costs almost nothing.

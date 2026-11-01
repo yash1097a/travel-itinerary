@@ -65,12 +65,14 @@ If it fails, **read which of the two failures it is** — they need different re
 treating them the same is how a previous profile gets silently overwritten:
 
 - **`NO_ACTIVE_PROFILE`** — the store is there and empty, so the user genuinely has no profile.
-  Say so and run the **`travel-profile` onboarding** to create one, then continue.
+  Say so, then follow `skills/travel-profile/REPO_SETUP.md`: ask whether they already have a
+  private profile repo before running the **`travel-profile` onboarding**, then continue.
 - **`PROFILE_STORE_MISSING`** — no store exists at all. On a fresh cloud container this usually
   means a profile from an earlier session **was lost with the container**, not that the user is
   new. Do **not** silently re-interview. Show the paths the command listed, say plainly that any
-  earlier profile is gone, and offer the choice: paste a saved profile back in
-  (`profiles.py import <name>`), or onboard from scratch. If they onboard, mention they can keep
+  earlier profile on this machine is gone, and offer the choice: connect their private profile
+  repo if they have one (`skills/travel-profile/REPO_SETUP.md`, path A), paste a saved profile back
+  in (`profiles.py import <name>`), or onboard from scratch. If they onboard, mention they can keep
   a copy with `profiles.py export` so the next container is one paste away.
 
 Either way the command prints **every path it checked** — pass that along rather than

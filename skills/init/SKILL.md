@@ -63,8 +63,10 @@ Read the `STATUS_JSON=...` line it prints:
 Present a short, warm greeting followed by the menu below. **Tailor it to the status:**
 
 - **The saved profile couldn't be loaded** (section 3) → lead with that (see section 3).
-- **No profiles yet** → lead with setting up a profile; make option 1 the profile setup and gently
-  say a profile lets you tailor every trip. Offer to start onboarding right now.
+- **No profile found** (`profiles` is empty and the pull didn't say `PROFILE_REPO_UNREACHABLE`) →
+  don't jump into the interview. Lead with **the one question in section 4**: do they already have
+  a private profile repo? Their answer decides whether you connect a repo, set one up, or onboard
+  locally. Keep the greeting to a line, ask the question, and show the menu after it.
 - **A profile exists** → greet in a way that acknowledges they're set up (name the active profile),
   and lead with planning a trip. Offer to start planning right now.
 
@@ -84,14 +86,15 @@ Use this structure (adapt the wording, keep the invocations exact):
 > | 🔎 | **Research depth** — *light* (fast, easy on usage limits) or *heavy* (deeper, uses more allowance) | change via `/travel-itinerary:travel-profile` — or *"switch to light/heavy research"* |
 > | ℹ️ | **See this menu again** | `/travel-itinerary:init` |
 >
-> *Tip: your preferences and downloaded map data stay on your device — nothing personal is shared.*
+> *Tip: your preferences live on this machine or in your own private GitHub repo, never in the
+> plugin. Nothing personal is shared.*
 
 If a profile exists, add a one-line note of the current **research depth** from the status (e.g.
 "Research depth: light — I'll keep research efficient and easy on your usage limits."), so users on
 tight allowances know they're protected and how to change it.
 
 Then ask what they'd like to do, and **offer to start the most likely next step immediately**
-(onboarding if no profile, otherwise planning) so they don't have to type a command.
+(the profile-repo question if no profile, otherwise planning) so they don't have to type a command.
 
 ## 3. If the saved profile couldn't be loaded
 
@@ -100,22 +103,34 @@ to a few lines:
 
 - Say plainly that their saved profile lives in the private repo it named, and it couldn't be
   loaded in this session.
-- Give the `reason:` line in plain words, with what fixes it:
-  - `auth`: this environment has no GitHub access to that repo. In a cloud session, start it with
-    the profile repo selected, or attach it (if you can attach repositories, offer to do that now
-    and re-run the pull). Otherwise connect GitHub and make sure the Claude GitHub App can see the
-    repo.
-  - `not_found`: the URL is wrong, or this account can't see the repo. Ask them to check
-    `TRAVEL_PROFILE_REPO`.
-  - `network`: the git host couldn't be reached (offline, or blocked by network policy).
+- Give the `reason:` line in plain words, and offer to fix it with them. This is the user who
+  has a repo but hasn't connected it here, so follow **path A, step 3** of
+  `skills/travel-profile/REPO_SETUP.md` (give this environment access), then run the pull again.
+  Once it works, also do the **Keep it connected** step there, so the next session doesn't hit
+  this again.
 - **Ask** which they'd like: fix access and retry the pull, paste a saved copy back in
   (`profiles.py import`), or carry on for now without their preferences. Only start onboarding if
   they say so: a new profile saved now would sit beside, and could later overwrite, the real one.
 
 Then show the menu, with the profile rows as options rather than a recommended next step.
 
+## 4. If no profile was found
+
+Follow `skills/travel-profile/REPO_SETUP.md` (in the sibling `travel-profile` skill folder). It
+starts with one question, *"Have you already made a private repo for your profile?"*, and then
+guides them down one of three paths:
+
+- **Yes** → connect it to this environment (path A).
+- **No** → create one with them, connect it, then onboard into it (path B).
+- **Not now** → onboard and save on this machine only (path C). In a cloud session, say that it's
+  deleted when the session ends.
+
+Ask the question before any interview. A new profile saved before a repo is connected sits
+beside, and can later collide with, one they already have.
+
 ## Rules
 - Be brief and welcoming; never expose raw script/pip output.
+- When no profile is found, ask about the profile repo first. Never start onboarding unasked.
 - A failed profile pull is never "no profile". Never offer onboarding as the next step when the
   pull said `PROFILE_REPO_UNREACHABLE`.
 - Keep the invocation strings exact so the slash commands work.
